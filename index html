@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07131f"><title>Blox Fruits Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#07131f;--panel:#0e2338;--panel2:#12304d;--line:#23496b;--ink:#eaf3fb;--mute:#93abc2;--brass:#e9b44c;--teal:#3fd0c9;--focus:#ffd777;--rc:#93abc2}
+.r-common,.r-starter{--rc:#a3b1c2}.r-uncommon{--rc:#5ad08a}.r-rare{--rc:#4aa8ff}.r-legendary{--rc:#ffb23e}.r-mythical{--rc:#ff5f8f}.r-mutation{--rc:#c58bff}.r-retired{--rc:#72808f}.r-title{--rc:#e9d9a6}.r-baserace,.r-raceupgrade,.r-raceawakening{--rc:#3fd0c9}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#0c2540 0,var(--bg) 540px) var(--bg);color:var(--ink);font:15px/1.45 Rubik,system-ui,"Segoe UI",Arial,sans-serif}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1150px;margin:auto;padding:0 16px}
+.hero{padding:34px 0 18px}
+h1{margin:0;font-size:clamp(36px,8vw,62px);line-height:1;font-weight:800;letter-spacing:-.02em}
+.sub{color:var(--mute);margin:10px 0 18px;max-width:560px}
+.search{display:flex;gap:8px}
+.field{position:relative;flex:1;min-width:0}
+.field input{width:100%;padding:15px 46px 15px 16px;border-radius:14px;border:1px solid var(--line);background:var(--panel);font-size:16px}
+.x{position:absolute;right:5px;top:5px;width:40px;height:40px;border:0;background:none;color:var(--mute);font-size:22px;cursor:pointer;display:none}
+.btn{border:1px solid var(--line);background:var(--panel2);border-radius:14px;padding:0 16px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--brass)}
+.primary{background:var(--brass);border-color:var(--brass);color:#2a1d05}
+.bar{position:sticky;top:0;z-index:5;background:#07131fee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none}
+.tab{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:9px 14px;color:var(--mute);cursor:pointer;white-space:nowrap}
+.tab b{margin-left:7px;color:var(--ink)}
+.tab[aria-pressed=true]{background:var(--brass);border-color:var(--brass);color:#2a1d05;font-weight:700}
+.tab[aria-pressed=true] b{color:#2a1d05}
+.opts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0 0 12px}
+select{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:none;border-radius:8px;padding:6px 10px;cursor:pointer;color:var(--mute)}
+.chip[aria-pressed=true]{border-color:var(--rc);color:var(--ink);background:#ffffff16}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:22px 0 12px}
+.head h2{margin:0;font-size:24px}.head span{color:var(--mute);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.cell{position:relative}
+.card{width:100%;height:100%;min-height:150px;text-align:left;display:flex;flex-direction:column;gap:7px;padding:14px;border-radius:14px;border:1px solid var(--line);border-left:5px solid var(--rc);background:linear-gradient(160deg,var(--panel2),var(--panel));cursor:pointer;transition:border-color .15s,background .15s}
+.card:hover{border-color:var(--rc);background:var(--panel2)}
+.top{display:flex;align-items:center;gap:8px;padding-right:34px}
+.tag{color:var(--rc);font-weight:700;font-size:12px;border:1px solid var(--rc);border-radius:999px;padding:2px 9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.card strong{font-size:17px;line-height:1.2}
+.how{color:var(--mute);font-size:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.foot{margin-top:auto;color:var(--teal);font-size:12px}
+.px{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:700}
+.px i,.pr i{display:block;font-style:normal;font-weight:400;color:var(--mute);font-size:11px}
+.has .how{-webkit-line-clamp:2}
+.pr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.pr div{background:#ffffff0d;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-weight:700}
+.pr div:last-child{grid-column:1/-1}
+.star{position:absolute;top:8px;right:8px;width:38px;height:38px;border:0;background:none;font-size:21px;color:var(--mute);cursor:pointer;border-radius:10px}
+.star[aria-pressed=true]{color:var(--brass)}
+.empty{grid-column:1/-1;padding:34px 16px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:14px}
+dialog{border:1px solid var(--line);border-radius:20px;background:var(--panel);color:var(--ink);padding:0;width:min(520px,calc(100% - 24px));max-height:calc(100% - 24px);overflow:auto}
+dialog::backdrop{background:#020a12cc}
+.sheet{padding:20px;border-top:6px solid var(--rc)}
+.sheet .top{padding:0;justify-content:space-between}.pos{color:var(--mute);font-size:12px}
+.sheet h2{margin:10px 0 0;font-size:27px;line-height:1.1}
+dt{color:var(--mute);font-size:12px;margin-top:14px}dd{margin:2px 0 0}dl{margin:0}
+.acts{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}.acts .btn{padding:11px 14px}
+.note{color:var(--mute);font-size:12px;margin:26px 0 8px}
+.footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--mute);font-size:12px}
+a{color:var(--teal)}
+@media(max-width:560px){.btn.rand{padding:0 12px}dialog{margin:auto auto 10px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div class="wrap hero">
+<h1>Blox Fruits Atlas</h1>
+<p class="sub" id="sub"></p>
+<div class="search"><div class="field"><input id="q" type="text" placeholder="Search a fruit, sword, title or NPC" autocomplete="off" aria-label="Search"><button class="x" id="x" aria-label="Clear search">×</button></div><button class="btn rand" id="rand">🎲 Random</button></div>
+</div>
+<div class="bar"><div class="wrap"><div class="tabs" id="tabs" role="group" aria-label="Categories"></div>
+<div class="opts"><select id="sea" aria-label="Sea"><option value="all">All seas</option><option>First Sea</option><option>Second Sea</option><option>Third Sea</option></select><select id="sort" aria-label="Sort"><option value="def">Default order</option><option value="az">A to Z</option><option value="za">Z to A</option><option value="rar">Rarity, highest first</option><option value="val">Trade value, high to low</option><option value="beli">Beli price, high to low</option></select><div class="chips" id="chips"></div></div></div></div>
+<div class="wrap"><div class="head"><h2 id="h"></h2><span id="n" aria-live="polite"></span></div><main class="grid" id="grid"></main>
+<p class="note">Game details change with updates. Some titles and event rewards are limited-time or unobtainable. Beli and Robux are Dealer prices (Robux buys the permanent version). Trade values are rough community estimates from FantasyBlox's list (dataset of 2026-09-07). Trackers disagree and values shift after updates, so check a second tracker before a big trade.</p>
+<div class="footer">Fan-made reference, not affiliated with Roblox or the Blox Fruits developers.<br>Sources: <a href="https://bloxfruitswiki.org/wiki/swords/" target="_blank" rel="noopener">Swords</a>, <a href="https://bloxfruitswiki.org/wiki/fighting-styles/" target="_blank" rel="noopener">Fighting styles</a>, <a href="https://bloxfruitswiki.org/wiki/races/" target="_blank" rel="noopener">Races</a>, <a href="https://blox-fruits-wiki.com/wiki/titles/" target="_blank" rel="noopener">Titles</a>, <a href="https://www.u7buy.com/blog/blox-fruits-all-fruits-list/" target="_blank" rel="noopener">Fruits</a>, <a href="https://bloxfruitstradecalc.pages.dev/value-list/" target="_blank" rel="noopener">Trade values</a>, <a href="https://blox-fruits.fandom.com/" target="_blank" rel="noopener">Fan wiki</a></div></div>
+<dialog id="dlg"><div class="sheet" id="sheet"></div></dialog>
+<script>
+const D=[];
+const add=(cat,name,rarity,sea,how,extra='')=>D.push({cat,name,rarity,sea,how,extra});
+const swords=[
+['Bisento','Legendary','Buy from Master Sword Dealer for 1,000,000 Beli.'],['Buddy Sword','Legendary','Drop from Cake Queen.'],['Canvander','Legendary','Drop from Beautiful Pirate.'],['Cursed Dual Katana','Mythical','Complete the Cursed Dual Katana scroll trials.'],['Cutlass','Common','Buy from Sword Dealer for 1,000 Beli.'],['Dark Blade','Mythical','Game pass; can also be gifted or traded.'],['Dark Dagger','Legendary','Drop from rip_indra (True Form).'],['Dragon Trident','Rare','Drop from Tide Keeper.'],['Dragonheart','Legendary','Obtain through Dragon Hunter quest/crafting.'],['Dual Katana','Common','Buy from Sword Dealer.'],['Dual-Headed Blade','Rare','Buy from Master Sword Dealer.'],['Fishing Trophy','Uncommon','Fishing Tournament reward; event/placement requirement.'],['Flail','Rare','Drop from Smoke Admiral.'],['Fox Lamp','Legendary','Obtain from Kitsune Shrine.'],['Gravity Blade','Rare','Drop from Orbitus.'],['Hallow Scythe','Mythical','Drop from Soul Reaper.'],['Iron Mace','Uncommon','Buy from Sword Dealer.'],['Katana','Common','Buy from Sword Dealer for 1,000 Beli.'],['Koko','Legendary','Drop from Order.'],['Longsword','Rare','Drop from Diamond.'],['Midnight Blade','Legendary','Buy from El Admin for 100 Ectoplasm.'],['Oroshi','Legendary','Buy from Legendary Sword Dealer.'],['Pipe','Rare','Buy from Sword Dealer.'],['Pole (1st Form)','Legendary','Drop from Thunder God.'],['Pole (2nd Form)','Legendary','Upgrade Pole (1st Form) through its special requirement.'],['Rengoku','Legendary','Use the Hidden Key in Ice Castle.'],['Saber','Legendary','Complete Saber Expert puzzle and defeat the boss.'],['Saishi','Legendary','Buy from Legendary Sword Dealer.'],['Shark Anchor','Legendary','Defeat the Anchor Terrorshark after summoning it with Monster Magnet.'],['Shark Saw','Uncommon','Drop from The Saw.'],['Shizu','Legendary','Buy from Legendary Sword Dealer.'],['Soul Cane','Rare','Buy from Living Skeleton.'],['Spikey Trident','Legendary','Drop from Cake Prince or Dough King.'],['Trident','Rare','Drop from Fishman Lord.'],['Triple Dark Blade','Mythical','Special/limited obtainment; check current game availability.'],['Triple Katana','Uncommon','Buy from Sword Dealer.'],['True Triple Katana','Mythical','Buy from Mysterious Man after obtaining the three legendary swords and meeting requirements.'],['Tushita','Legendary','Complete the torch puzzle and defeat Longma.'],['Twin Hooks','Uncommon','Drop from Captain Elephant.'],['Warden Sword','Rare','Drop from Chief Warden.'],['Yama','Legendary','Complete Elite Hunter quests and pull it from its location.']];
+swords.forEach(([n,r,h])=>add('Swords',n,r,'Multiple Seas',h));
+const styles=[
+['Combat','Starter','All players start with it.'],['Dark Step','150,000 Beli','Buy from Dark Step Teacher in Pirate Village.'],['Electric','500,000 Beli','Buy from Mad Scientist in Skylands.'],['Water Kung Fu','750,000 Beli','Buy from Water Kung Fu Teacher in Underwater City.'],['Dragon Breath','1,500 Fragments','Buy from Sabi in Kingdom of Rose.'],['Superhuman','3,000,000 Beli','Get 300 mastery in Dark Step, Electric, Water Kung Fu and Dragon Breath; buy from Martial Arts Master.'],['Advanced Combat','Special','Learn from Secrets Master in Middle Town; follow the in-game unlock requirements.'],['Death Step','2,500,000 Beli + 5,000 Fragments','Get 400 mastery in Dark Step, obtain Library Key, then learn from Phoeyu in Ice Castle.'],['Sharkman Karate','2,500,000 Beli + 5,000 Fragments','Get 400 mastery in Water Kung Fu and give Water Key to Sharkman Teacher.'],['Electric Claw','3,000,000 Beli + 5,000 Fragments','Get 400 mastery in Electric and complete Previous Hero timed quest.'],['Dragon Talon','3,000,000 Beli + 5,000 Fragments','Get 400 mastery in Dragon Breath; give Fire Essence to Uzoth.'],['Godhuman','5,000,000 Beli + materials','Get 400 mastery in required advanced styles and bring materials to Ancient Monk.'],['Sanguine Art','5,000,000 Beli + 5,000 Fragments','Obtain Leviathan Heart and bring it to Shafi at Tiki Outpost.']];
+styles.forEach(([n,r,h])=>add('Fighting Styles',n,r,'Multiple Seas',h));
+const races=['Human','Rabbit (Mink)','Shark','Angel','Ghoul','Cyborg','Draco'];
+races.forEach((n,i)=>{let base=['Randomly assigned when first joining (common initial race).','Randomly assigned when first joining.','Randomly assigned when first joining.','Randomly assigned when first joining.','Buy from Experimic for 100 Ectoplasm + Hellfire Torch.','Complete the Cyborg puzzle.','Complete Dragon Wizard quest.'][i];add('Races',n+' — V1','Base race','Multiple Seas',base,'Original race traits.');});
+const v2='Reach level 850, complete Colosseum quest, do Alchemist flower quest in Green Zone and pay 500,000 Beli. Draco V2: level 2000, collect 5 Fire Flowers for Dragon Wizard and pay 1,000,000.';
+races.forEach(n=>add('Races',n+' — V2','Race upgrade','Second Sea',n==='Draco'?'Level 2000; collect 5 Fire Flowers for Dragon Wizard and pay 1,000,000.':v2,'Unlocks upgraded race passive.'));
+const v3={
+'Human':'Talk to Arowe (level 1000, V2, Don Swan defeated); defeat Diamond, Jeremy and Orbitus.',
+'Rabbit (Mink)':'Talk to Arowe; collect 30 chests.',
+'Shark':'Talk to Arowe; defeat a naturally spawned Sea Beast.',
+'Angel':'Talk to Arowe; defeat another Angel player.',
+'Ghoul':'Talk to Arowe; defeat 5 players in the Second Sea.',
+'Cyborg':'Talk to Arowe; show a physical fruit (not consumed).',
+'Draco':'Dragon Wizard quest; defeat a Terrorshark and pay 3,000,000.'
+};
+races.forEach(n=>add('Races',n+' — V3','Race upgrade','Second Sea',v3[n],'Unlocks a race-specific active ability.'));
+races.forEach(n=>add('Races',n+' — V4','Race awakening','Third Sea','Unlock V3, defeat rip_indra and Dough King, then complete the Temple of Time trials and awakening process.','Race awakening; each race has unique abilities and upgrades.'));
+const titles=[
+['The Unleashed','Unlock Human V2.'],['Unmatched Speed','Unlock Rabbit V2.'],['Sea Monster','Unlock Shark V2.'],['Sacred Warrior','Unlock Angel V2.'],['The Ghoul','Unlock Ghoul V2.'],['The Cyborg','Unlock Cyborg V2.'],['Elder Wyrm','Unlock Draco V2.'],['Full Power','Unlock Human V3.'],['Godspeed','Unlock Rabbit V3.'],['Warrior of the Sea','Unlock Shark V3.'],['Perfect Being','Unlock Angel V3.'],['Hell Hound','Unlock Ghoul V3.'],['War Machine','Unlock Cyborg V3.'],['Berserker','Unlock Human V4.'],['Ancient Flame','Unlock Draco V3.'],['Thunderbolt','Unlock Rabbit V4.'],['Leviathan','Unlock Shark V4.'],['His Majesty','Unlock Angel V4.'],['Nightwalker','Unlock Ghoul V4.'],['Genesis','Unlock Cyborg V4.'],['Primordial Guardian','Unlock Draco V4.'],['Pirate Hunter','Reach 5M+ Bounty/Honor.'],['Bounty Hunter','Reach 5M+ Bounty/Honor.'],['Warlord of the Sea','Reach 10M+ Bounty.'],['Emperor of the Sea','Reach 20M+ Bounty.'],['Empress of the Sea','Reach 20M+ Bounty.'],['Admiral','Reach 10M+ Honor.'],['Fleet Admiral','Reach 20M+ Honor.'],['Enlightened One','Unlock any awakening.'],['Awakened One','Unlock any awakening.'],['Over Heaven','Unlock any awakening.'],['Over Hell','Unlock any awakening.'],['Flame Fist','Unlock Flame awakening.'],['The Ice Queen','Unlock Ice awakening.'],['The Ice King','Unlock Ice awakening.'],['The Strongest One','Unlock Quake awakening.'],['The First Light','Unlock Light awakening.'],['Dark Lord','Unlock Dark awakening.'],['The Spider','Unlock Spider awakening.'],['Thunder God','Unlock Rumble awakening; currently listed as unobtainable.'],['The Red Dog','Unlock Magma awakening.'],['Colossal God','Unlock Buddha awakening.'],['Desert Prince','Unlock Sand awakening.'],['The Phoenix','Unlock Phoenix awakening.'],['Bread Chaser','Unlock Dough awakening.'],['Big News','Redeem code BIGNEWS.'],['Justice Seeker','Claim a bounty as a Marine.'],['Empty Vessel','Run out of energy.'],['The Unlucky','Die to a regular enemy.'],['The Vanquished','Die to a boss.'],['Fallen Hero','Die to a raid boss.'],['Iron Man','Reach max Aura.'],['Ultra Instinct','Reach max Instinct.'],['Mad Scientist','Buy a regular Microchip.'],['The Professor','Buy a special Microchip.'],['The Shadow','Stay in a server for more than 1 hour.'],['The Vampire','Stay in a server for more than 4 hours.'],['Dracula','Stay in a server for more than 12 hours.'],['The Explorer','Reach level 800.'],['The Adventurer','Reach level 1000.'],['The Mercenary','Reach level 1200.'],['The Viking','Reach level 1600.'],['The Pioneer','Reach level 2000.'],['The Glorious','Reach level 2400.'],['The Master','Reach max mastery on any weapon.'],['Fist of Death','Reach max mastery on a Fighting Style.'],['God Blade','Reach max mastery on a Sword.'],['King Sniper','Reach max mastery on a Gun.'],['Beyond the Sea','Reach max mastery on a Blox Fruit.'],['The Conqueror','Complete a raid.'],['Last Hope','Be the last person standing and win a raid.'],['The Supersonic','Complete a raid in under 5 minutes.'],['The Flash','Complete a raid in under 3 minutes 30 seconds.'],['The Champion',"Complete Bartilo's mission."],['Blessed One','Find a fruit.'],['The Rich','Obtain 5M+.'],['Unlimited Money','Obtain 20M+.'],['The Richest in the World','Obtain 50M+.'],['The Swordsman','Obtain a sword from Legendary Sword Dealer.'],['The Collector','Buy from Legendary Sword Dealer or Master of Auras.'],['Beast Hunter','Defeat a Sea Beast.'],['Forbidden One','Find Fist of Darkness in a chest.'],['Heavenly Devil','Defeat Don Swan.'],['The Cursed One','Defeat Darkbeard.'],['Beyond Death','Defeat Order.'],["Night's Edge",'Defeat Cursed Captain.'],['Lavish Living','Buy any fruit from Blox Fruit Dealer.'],['Night Owl','Buy a 1M+ fruit from Blox Fruit Dealer.'],['Dragonborn','Unlock Dragon Breath.'],['Burning Leg','Unlock Death Step.'],['Sharkman','Unlock Sharkman Karate.'],['Samurai','Unlock and equip Rengoku.'],['Risk Taker','Purchase a fruit from Blox Fruit Gacha.'],['Luck of the Draw','Get a fruit worth more than 1M from Gacha.'],['Unstoppable Force','Defeat 5 players without dying in same server.'],['Raging Demon','Defeat 20 players without dying in same server.'],['Human Weapon','Unlock Superhuman.'],['Demon Eye','Unlock True Triple Katana.'],['The Enhancer','Unlock any Aura color.'],['The Ghost','Collect 100 Ectoplasms.'],['Ruler of Night','Collect 250 Ectoplasms.'],['Lonely Reaper','Collect 1,000 Ectoplasms.'],['Sugar Rush','Collect 100 Candies during Christmas event.'],['Christmas Spirit','Collect 250 Candies during Christmas event.'],['Raid Boss','Get a fruit from Pirate Raid event.'],['The Real Deal','Defeat an Elite enemy.'],['Demon Mode','Unlock Yama.'],['Celestial Swordsman','Unlock Tushita.'],['Raiton','Unlock Electric Claw.'],['Shadow Sovereign','Defeat rip_indra True Form.'],['The Chosen One',"Find God's Chalice in a chest."],['Main Character',"Complete Citizen's mission."],['Skeleton','Collect 250 Bones.'],['Undead Lord','Collect 500 Bones during Halloween event.'],['Death King','Collect 2,000 Bones.'],['Shinigami','Defeat Soul Reaper.'],['Dough Commander','Defeat Cake Prince.'],['Dough King','Defeat Dough King.'],['Terrorbringer','Defeat 10 Terrorsharks.'],['Serpent Slayer','Defeat Leviathan.'],['Abyss Tamer','Clear 50 Sea Events.'],['Nautical Bane','Clear 200 Sea Events.'],['Tailed Beast','Acquire from Kitsune Shrine.'],['Liberator of the Sky','Defeat Tyrant of the Skies.'],['Treasure Catcher','Fish up 500 treasure chests.'],['Fish Wrangler','Reach fishing level 20.'],['Master Fisherman','Reach fishing level 100.'],['Fisherman','Obtain Fishing Rod.'],['The Debugger','Defeat Luckymaxer.'],['Grounded','Defeat ORIGINAL INDRA.'],['Dragon Talon Prodigy','Defeat content creator Uzoth.'],['Brazilian Warrior','Defeat luanclashwar.'],
