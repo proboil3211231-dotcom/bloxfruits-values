@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07131f"><script>try{document.documentElement.dataset.theme=localStorage.getItem('atlas-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){document.documentElement.dataset.theme='dark'}</script><title>Blox Fruits Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg2:#0c2540;--barbg:#07131fee;--hl:#ffffff16;--hl2:#ffffff0d;--bg:#07131f;--panel:#0e2338;--panel2:#12304d;--line:#23496b;--ink:#eaf3fb;--mute:#93abc2;--brass:#e9b44c;--teal:#3fd0c9;--focus:#ffd777;--rc:#93abc2}
+.r-common,.r-starter{--rc:#a3b1c2}.r-uncommon{--rc:#5ad08a}.r-rare{--rc:#4aa8ff}.r-legendary{--rc:#ffb23e}.r-mythical{--rc:#ff5f8f}.r-mutation{--rc:#c58bff}.r-retired{--rc:#72808f}.r-title{--rc:#e9d9a6}.r-baserace,.r-raceupgrade,.r-raceawakening{--rc:#3fd0c9}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,var(--bg2) 0,var(--bg) 540px) var(--bg);color:var(--ink);font:15px/1.45 Rubik,system-ui,"Segoe UI",Arial,sans-serif}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1150px;margin:auto;padding:0 16px}
+.hero{padding:34px 0 18px}
+h1{margin:0;font-size:clamp(36px,8vw,62px);line-height:1;font-weight:800;letter-spacing:-.02em}
+.sub{color:var(--mute);margin:10px 0 18px;max-width:560px}
+.search{display:flex;gap:8px}
+.field{position:relative;flex:1;min-width:0}
+.field input{width:100%;padding:15px 46px 15px 16px;border-radius:14px;border:1px solid var(--line);background:var(--panel);font-size:16px}
+.x{position:absolute;right:5px;top:5px;width:40px;height:40px;border:0;background:none;color:var(--mute);font-size:22px;cursor:pointer;display:none}
+.btn{border:1px solid var(--line);background:var(--panel2);border-radius:14px;padding:0 16px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--brass)}
+.primary{background:var(--brass);border-color:var(--brass);color:#2a1d05}
+.bar{position:sticky;top:0;z-index:5;background:var(--barbg);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none}
+.tab{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:9px 14px;color:var(--mute);cursor:pointer;white-space:nowrap}
+.tab b{margin-left:7px;color:var(--ink)}
+.tab[aria-pressed=true]{background:var(--brass);border-color:var(--brass);color:#2a1d05;font-weight:700}
+.tab[aria-pressed=true] b{color:#2a1d05}
+.opts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0 0 12px}
+select{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:none;border-radius:8px;padding:6px 10px;cursor:pointer;color:var(--mute)}
+.chip[aria-pressed=true]{border-color:var(--rc);color:var(--ink);background:var(--hl)}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:22px 0 12px}
+.head h2{margin:0;font-size:24px}.head span{color:var(--mute);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.cell{position:relative}
+.card{width:100%;height:100%;min-height:150px;text-align:left;display:flex;flex-direction:column;gap:7px;padding:14px;border-radius:14px;border:1px solid var(--line);border-left:5px solid var(--rc);background:linear-gradient(160deg,var(--panel2),var(--panel));cursor:pointer;transition:border-color .15s,background .15s}
+.card:hover{border-color:var(--rc);background:var(--panel2)}
+.top{display:flex;align-items:center;gap:8px;padding-right:34px}
+.tag{color:var(--rc);font-weight:700;font-size:12px;border:1px solid var(--rc);border-radius:999px;padding:2px 9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.card strong{font-size:17px;line-height:1.2}
+.how{color:var(--mute);font-size:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.foot{margin-top:auto;color:var(--teal);font-size:12px}
+.px{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:700}
+.px i,.pr i{display:block;font-style:normal;font-weight:400;color:var(--mute);font-size:11px}
+.has .how{-webkit-line-clamp:2}
+.pr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.pr div{background:var(--hl2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-weight:700}
+.pr div:last-child{grid-column:1/-1}
+.star{position:absolute;top:8px;right:8px;width:38px;height:38px;border:0;background:none;font-size:21px;color:var(--mute);cursor:pointer;border-radius:10px}
+.star[aria-pressed=true]{color:var(--brass)}
+.empty{grid-column:1/-1;padding:34px 16px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:14px}
+dialog{border:1px solid var(--line);border-radius:20px;background:var(--panel);color:var(--ink);padding:0;width:min(520px,calc(100% - 24px));max-height:calc(100% - 24px);overflow:auto}
+dialog::backdrop{background:#020a12cc}
+.sheet{padding:20px;border-top:6px solid var(--rc)}
+.sheet .top{padding:0;justify-content:space-between}.pos{color:var(--mute);font-size:12px}
+.sheet h2{margin:10px 0 0;font-size:27px;line-height:1.1}
+dt{color:var(--mute);font-size:12px;margin-top:14px}dd{margin:2px 0 0}dl{margin:0}
+.acts{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}.acts .btn{padding:11px 14px}
+.note{color:var(--mute);font-size:12px;margin:26px 0 8px}
+.footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--mute);font-size:12px}
+a{color:var(--teal)}
+@media(max-width:560px){.btn.rand{padding:0 12px}dialog{margin:auto auto 10px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.r-regular{--rc:#7fb0e0}.r-secret{--rc:#ff8a3d}.r-limited{--rc:#f06bd0}.r-boss{--rc:#ff6b5e}
+:root[data-theme=light]{color-scheme:light;--bg:#f3f7fb;--bg2:#d9e8f6;--panel:#fff;--panel2:#eaf2fa;--line:#bfd0e2;--ink:#0f2236;--mute:#4d6379;--brass:#e0a021;--teal:#0b7b75;--focus:#0b5fd1;--barbg:#f3f7fbee;--hl:#00000010;--hl2:#0000000a;
+.r-common,.r-starter{--rc:#64758a}.r-uncommon{--rc:#1b9a52}.r-rare{--rc:#1a74d1}.r-legendary{--rc:#c47600}.r-mythical{--rc:#d6336c}.r-mutation{--rc:#8a3fd1}.r-retired{--rc:#5b6978}.r-title{--rc:#8a7420}.r-baserace,.r-raceupgrade,.r-raceawakening{--rc:#0b8a84}.r-regular{--rc:#3d7fc0}.r-secret{--rc:#d2691e}.r-limited{--rc:#c0399f}.r-boss{--rc:#d63c30}}
+dialog::backdrop{background:#0008}
+.mv{display:grid;grid-template-columns:30px 1fr auto;gap:6px 10px;margin-top:8px;align-items:center}
+.mv b{display:grid;place-items:center;height:28px;border:1px solid var(--rc);border-radius:8px;color:var(--rc)}
+.mv i{font-style:normal;color:var(--mute);font-size:12px}
+@media(max-width:560px){.search{flex-wrap:wrap}.field{flex-basis:100%}.search .btn{flex:1;padding:12px}}
+
+#guideFab{position:fixed;right:16px;bottom:16px;z-index:20;border:0;border-radius:999px;background:var(--brass);color:#241b09;padding:14px 18px;font-weight:800;box-shadow:0 8px 28px #0007;cursor:pointer}
+#guidePanel{position:fixed;right:14px;bottom:76px;z-index:21;width:min(390px,calc(100vw - 28px));height:min(560px,calc(100dvh - 105px));background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:0 16px 48px #0009;display:flex;flex-direction:column;overflow:hidden}
+#guidePanel[hidden]{display:none}
+.guideHead{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;background:var(--panel2);border-bottom:1px solid var(--line)}
+.guideHead button{border:0;background:none;font-size:25px;color:var(--ink)}
+.guideIntro{padding:10px 14px;color:var(--mute);font-size:12px;border-bottom:1px solid var(--line)}
+.guideChat{padding:12px;overflow:auto;display:flex;flex-direction:column;gap:9px;flex:1}
+.guideMsg{max-width:90%;padding:10px 12px;border-radius:13px;line-height:1.4;font-size:13px;white-space:pre-wrap}
+.guideMsg.bot{background:var(--panel2);align-self:flex-start}
+.guideMsg.user{background:var(--brass);color:#241b09;align-self:flex-end}
+.guideForm{display:flex;gap:7px;padding:10px;border-top:1px solid var(--line)}
+.guideForm input{min-width:0;flex:1;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--ink)}
+.guideForm button,.guideQuick button{border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:10px;padding:9px 11px;font-weight:700}
+.guideQuick{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px 10px}
+.guideQuick button{font-size:11px}
+
+.itemPic{height:118px;width:100%;position:relative;display:grid;place-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:48px}
+.itemPic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6px}
+.sheetPic{height:170px;width:min(100%,220px);position:relative;display:grid;place-items:center;margin:12px auto;border:1px solid var(--line);border-radius:14px;background:var(--bg);overflow:hidden;font-size:60px}
+.sheetPic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px}
+.mono{font-weight:800;color:var(--rc);opacity:.85;letter-spacing:.02em}
+.ci{position:absolute;right:6px;bottom:3px;font-size:15px}
+.itemPic img,.sheetPic img{background:var(--bg);z-index:2}
+#fcount{margin-left:5px;color:var(--brass)}
+.fl{display:block;margin:16px 0 6px;color:var(--mute);font-size:12px}
+.sheet select{width:100%;padding:11px 10px}
+#chips .chip{padding:9px 12px}
+#mdlg{width:min(660px,calc(100% - 24px))}
+.mtabs{display:flex;gap:8px;margin:12px 0}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.tgrid h3{margin:0 0 8px;font-size:15px}
+.tslot{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--hl2)}
+.tslot label,.tsum{font-size:12px;color:var(--mute)}
+.tslot label{display:flex;gap:6px;align-items:center}
+.verdict{--vc:var(--brass);margin:14px 0 8px;padding:14px;border-radius:14px;border:2px solid var(--vc);text-align:center}
+.verdict big{display:block;font-size:44px;font-weight:800;line-height:1.1;color:var(--vc)}
+.vW{--vc:#2fbf71}.vL{--vc:#e5484d}.vF{--vc:#e9b44c}
+.meter{height:10px;border-radius:99px;background:var(--hl);overflow:hidden;margin:10px 0}
+.meter i{display:block;height:100%;background:var(--vc)}
+.adv{margin:6px 0 0;padding-left:20px}.adv li{margin:7px 0}
+.hbtn{display:block;width:100%;text-align:left;margin-top:6px;padding:10px 12px;font-weight:500}
+@media(max-width:420px){.tgrid{gap:6px}.search .btn{padding:12px 10px}}
+</style></head><body>
+<div class="wrap hero">
+<h1>Blox Fruits Atlas</h1>
+<p class="sub" id="sub"></p>
+<div class="search"><div class="field"><input id="q" type="text" placeholder="Search a fruit, sword, accessory, aura, boss or title" autocomplete="off" aria-label="Search"><button class="x" id="x" aria-label="Clear search">×</button></div><button class="btn" id="fbtn" aria-label="Open filters">⚙ Filters<b id="fcount"></b></button><button class="btn" id="more" aria-label="More tools">✚ More</button><button class="btn" id="theme"></button></div>
+</div>
+<div class="bar"><div class="wrap"><div class="tabs" id="tabs" role="group" aria-label="Categories"></div>
+</div></div>
+<div class="wrap"><div class="head"><h2 id="h"></h2><span id="n" aria-live="polite"></span></div><main class="grid" id="grid"></main>
+<p class="note">Game details change with updates. Some titles and event rewards are limited-time or unobtainable. Beli and Robux are Dealer prices (Robux buys the permanent version). Trade values are rough community estimates from a 2026 tracker snapshot. Trackers disagree and values shift after updates, so check a second tracker before a big trade.</p>
+<div class="footer">Fan-made reference, not affiliated with Roblox or the Blox Fruits developers. Item thumbnails are loaded from community-wiki file pages; an initials badge appears if a matching image is unavailable.<br>Sources: <a href="https://bloxfruitswiki.org/wiki/swords/" target="_blank" rel="noopener">Swords</a>, <a href="https://bloxfruitswiki.org/wiki/fighting-styles/" target="_blank" rel="noopener">Fighting styles</a>, <a href="https://bloxfruitswiki.org/wiki/races/" target="_blank" rel="noopener">Races</a>, <a href="https://blox-fruits-wiki.com/wiki/titles/" target="_blank" rel="noopener">Titles</a>, <a href="https://www.u7buy.com/blog/blox-fruits-all-fruits-list/" target="_blank" rel="noopener">Fruits</a>, <a href="https://bloxfruitstradecalc.pages.dev/value-list/" target="_blank" rel="noopener">Trade values</a>, <a href="https://bloxodes.com/wiki/blox-fruits/accessories" target="_blank" rel="noopener">Accessories</a>, <a href="https://bloxodes.com/wiki/blox-fruits/bosses" target="_blank" rel="noopener">Bosses</a>, <a href="https://mobilematters.gg/roblox/blox-fruits-aura-colors" target="_blank" rel="noopener">Aura colours</a>, <a href="https://beebom.com/all-fruits-in-blox-fruits/" target="_blank" rel="noopener">Fruit moves</a>, <a href="https://blox-fruits.fandom.com/" target="_blank" rel="noopener">Fan wiki</a></div></div>
+<button id="guideFab" aria-label="Open Atlas guide">✦ Guide</button>
+<aside id="guidePanel" aria-label="Atlas guide" hidden>
+ <div class="guideHead"><b>✦ Atlas Guide</b><button id="guideClose" aria-label="Close guide">×</button></div>
+ <div class="guideIntro">Ask about items, prices, boss drops and spawns, compare fruits, or type a trade like “Is Kitsune for Dough + Gas a good trade?”. It runs offline in your browser from the Atlas data and is not a generative AI.</div>
+ <div id="guideChat" class="guideChat" aria-live="polite"><div class="guideMsg bot">Hi! Ask me “Where does Cake Queen spawn?”, “How do I get Shark Anchor?”, “What does Pale Scarf do?”, or “How do I unlock Ghoul V3?”</div></div>
+ <form id="guideForm" class="guideForm"><input id="guideInput" placeholder="Ask the Atlas Guide…" autocomplete="off" aria-label="Ask the Atlas Guide"><button type="submit">Send</button></form>
+ <div class="guideQuick"><button data-q="How do I unlock race V4?">Race V4</button><button data-q="How do I get Godhuman?">Godhuman</button><button data-q="What does unobtainable mean?">Unobtainable fruits</button><button data-q="Open Trade Lab">Trade Lab</button><button data-q="Top trade values">Top values</button></div>
+</aside>
+<dialog id="fdlg"><div class="sheet"><div class="top"><b>⚙ Filters</b><button class="btn" id="fclose" style="padding:9px 14px">Done</button></div><span class="fl">Rarity</span><div class="chips" id="chips"></div><label class="fl" for="sea">Sea</label><select id="sea"><option value="all">All seas</option><option>First Sea</option><option>Second Sea</option><option>Third Sea</option></select><label class="fl" for="sort">Sort by</label><select id="sort"><option value="def">Default order</option><option value="az">A to Z</option><option value="za">Z to A</option><option value="rar">Rarity, highest first</option><option value="val">Trade value, high to low</option><option value="dem">Trading demand, high to low</option><option value="beli">Beli price, high to low</option></select><div class="acts"><button class="btn" id="freset">Reset filters</button></div></div></dialog>
+<dialog id="mdlg"><div class="sheet"><div class="top"><b>✚ More</b><button class="btn" id="mclose" style="padding:9px 14px">Close</button></div><div class="mtabs"><button class="tab" data-m="trade" aria-pressed="true">⚖ Trade Lab</button><button class="tab" data-m="tools" aria-pressed="false">🧰 Tools</button></div><section id="m-trade"></section><section id="m-tools" hidden></section></div></dialog>
+<dialog id="dlg"><div class="sheet" id="sheet"></div></dialog>
+<script>
+const D=[];
+const add=(cat,name,rarity,sea,how,extra='')=>D.push({cat,name,rarity,sea,how,extra});
+const swords=[
+['Bisento','Legendary','Buy from Master Sword Dealer for 1,000,000 Beli.'],['Buddy Sword','Legendary','Drop from Cake Queen.'],['Canvander','Legendary','Drop from Beautiful Pirate.'],['Cursed Dual Katana','Mythical','Complete the Cursed Dual Katana scroll trials.'],['Cutlass','Common','Buy from Sword Dealer for 1,000 Beli.'],['Dark Blade','Mythical','Game pass; can also be gifted or traded.'],['Dark Dagger','Legendary','Drop from rip_indra (True Form).'],['Dragon Trident','Rare','Drop from Tide Keeper.'],['Dragonheart','Legendary','Obtain through Dragon Hunter quest/crafting.'],['Dual Katana','Common','Buy from Sword Dealer.'],['Dual-Headed Blade','Rare','Buy from Master Sword Dealer.'],['Fishing Trophy','Uncommon','Fishing Tournament reward; event/placement requirement.'],['Flail','Rare','Drop from Smoke Admiral.'],['Fox Lamp','Legendary','Obtain from Kitsune Shrine.'],['Gravity Blade','Rare','Drop from Orbitus.'],['Hallow Scythe','Mythical','Drop from Soul Reaper.'],['Iron Mace','Uncommon','Buy from Sword Dealer.'],['Katana','Common','Buy from Sword Dealer for 1,000 Beli.'],['Koko','Legendary','Drop from Order.'],['Longsword','Rare','Drop from Diamond.'],['Midnight Blade','Legendary','Buy from El Admin for 100 Ectoplasm.'],['Oroshi','Legendary','Buy from Legendary Sword Dealer.'],['Pipe','Rare','Buy from Sword Dealer.'],['Pole (1st Form)','Legendary','Drop from Thunder God.'],['Pole (2nd Form)','Legendary','Upgrade Pole (1st Form) through its special requirement.'],['Rengoku','Legendary','Use the Hidden Key in Ice Castle.'],['Saber','Legendary','Complete Saber Expert puzzle and defeat the boss.'],['Saishi','Legendary','Buy from Legendary Sword Dealer.'],['Shark Anchor','Legendary','Defeat the Anchor Terrorshark after summoning it with Monster Magnet.'],['Shark Saw','Uncommon','Drop from The Saw.'],['Shizu','Legendary','Buy from Legendary Sword Dealer.'],['Soul Cane','Rare','Buy from Living Skeleton.'],['Spikey Trident','Legendary','Drop from Cake Prince or Dough King.'],['Trident','Rare','Drop from Fishman Lord.'],['Triple Dark Blade','Mythical','Special/limited obtainment; check current game availability.'],['Triple Katana','Uncommon','Buy from Sword Dealer.'],['True Triple Katana','Mythical','Buy from Mysterious Man after obtaining the three legendary swords and meeting requirements.'],['Tushita','Legendary','Complete the torch puzzle and defeat Longma.'],['Twin Hooks','Uncommon','Drop from Captain Elephant.'],['Warden Sword','Rare','Drop from Chief Warden.'],['Yama','Legendary','Complete Elite Hunter quests and pull it from its location.']];
+swords.forEach(([n,r,h])=>add('Swords',n,r,'Multiple Seas',h));
+const styles=[
+['Combat','Starter','All players start with it.'],['Dark Step','150,000 Beli','Buy from Dark Step Teacher in Pirate Village.'],['Electric','500,000 Beli','Buy from Mad Scientist in Skylands.'],['Water Kung Fu','750,000 Beli','Buy from Water Kung Fu Teacher in Underwater City.'],['Dragon Breath','1,500 Fragments','Buy from Sabi in Kingdom of Rose.'],['Superhuman','3,000,000 Beli','Get 300 mastery in Dark Step, Electric, Water Kung Fu and Dragon Breath; buy from Martial Arts Master.'],['Advanced Combat','Special','Learn from Secrets Master in Middle Town; follow the in-game unlock requirements.'],['Death Step','2,500,000 Beli + 5,000 Fragments','Get 400 mastery in Dark Step, obtain Library Key, then learn from Phoeyu in Ice Castle.'],['Sharkman Karate','2,500,000 Beli + 5,000 Fragments','Get 400 mastery in Water Kung Fu and give Water Key to Sharkman Teacher.'],['Electric Claw','3,000,000 Beli + 5,000 Fragments','Get 400 mastery in Electric and complete Previous Hero timed quest.'],['Dragon Talon','3,000,000 Beli + 5,000 Fragments','Get 400 mastery in Dragon Breath; give Fire Essence to Uzoth.'],['Godhuman','5,000,000 Beli + materials','Get 400 mastery in required advanced styles and bring materials to Ancient Monk.'],['Sanguine Art','5,000,000 Beli + 5,000 Fragments','Obtain Leviathan Heart and bring it to Shafi at Tiki Outpost.']];
+styles.forEach(([n,r,h])=>add('Fighting Styles',n,r,'Multiple Seas',h));
+const races=['Human','Rabbit (Mink)','Shark','Angel','Ghoul','Cyborg','Draco'];
+races.forEach((n,i)=>{let base=['Randomly assigned when first joining (common initial race).','Randomly assigned when first joining.','Randomly assigned when first joining.','Randomly assigned when first joining.','Buy from Experimic for 100 Ectoplasm + Hellfire Torch.','Complete the Cyborg puzzle.','Complete Dragon Wizard quest.'][i];add('Races',n+' — V1','Base race','Multiple Seas',base,'Original race traits.');});
+const v2='Reach level 850, complete Colosseum quest, do Alchemist flower quest in Green Zone and pay 500,000 Beli. Draco V2: level 2000, collect 5 Fire Flowers for Dragon Wizard and pay 1,000,000.';
+races.forEach(n=>add('Races',n+' — V2','Race upgrade','Second Sea',n==='Draco'?'Level 2000; collect 5 Fire Flowers for Dragon Wizard and pay 1,000,000.':v2,'Unlocks upgraded race passive.'));
+const v3={
+'Human':'Talk to Arowe (level 1000, V2, Don Swan defeated); defeat Diamond, Jeremy and Orbitus.',
+'Rabbit (Mink)':'Talk to Arowe; collect 30 chests.',
+'Shark':'Talk to Arowe; defeat a naturally spawned Sea Beast.',
+'Angel':'Talk to Arowe; defeat another Angel player.',
+'Ghoul':'Talk to Arowe; defeat 5 players in the Second Sea.',
+'Cyborg':'Talk to Arowe; show a physical fruit (not consumed).',
+'Draco':'Dragon Wizard quest; defeat a Terrorshark and pay 3,000,000.'
+};
+races.forEach(n=>add('Races',n+' — V3','Race upgrade','Second Sea',v3[n],'Unlocks a race-specific active ability.'));
+races.forEach(n=>add('Races',n+' — V4','Race awakening','Third Sea','Unlock V3, defeat rip_indra and Dough King, then complete the Temple of Time trials and awakening process.','Race awakening; each race has unique abilities and upgrades.'));
+const titles=[
+['The Unleashed','Unlock Human V2.'],['Unmatched Speed','Unlock Rabbit V2.'],['Sea Monster','Unlock Shark V2.'],['Sacred Warrior','Unlock Angel V2.'],['The Ghoul','Unlock Ghoul V2.'],['The Cyborg','Unlock Cyborg V2.'],['Elder Wyrm','Unlock Draco V2.'],['Full Power','Unlock Human V3.'],['Godspeed','Unlock Rabbit V3.'],['Warrior of the Sea','Unlock Shark V3.'],['Perfect Being','Unlock Angel V3.'],['Hell Hound','Unlock Ghoul V3.'],['War Machine','Unlock Cyborg V3.'],['Berserker','Unlock Human V4.'],['Ancient Flame','Unlock Draco V3.'],['Thunderbolt','Unlock Rabbit V4.'],['Leviathan','Unlock Shark V4.'],['His Majesty','Unlock Angel V4.'],['Nightwalker','Unlock Ghoul V4.'],['Genesis','Unlock Cyborg V4.'],['Primordial Guardian','Unlock Draco V4.'],['Pirate Hunter','Reach 5M+ Bounty/Honor.'],['Bounty Hunter','Reach 5M+ Bounty/Honor.'],['Warlord of the Sea','Reach 10M+ Bounty.'],['Emperor of the Sea','Reach 20M+ Bounty.'],['Empress of the Sea','Reach 20M+ Bounty.'],['Admiral','Reach 10M+ Honor.'],['Fleet Admiral','Reach 20M+ Honor.'],['Enlightened One','Unlock any awakening.'],['Awakened One','Unlock any awakening.'],['Over Heaven','Unlock any awakening.'],['Over Hell','Unlock any awakening.'],['Flame Fist','Unlock Flame awakening.'],['The Ice Queen','Unlock Ice awakening.'],['The Ice King','Unlock Ice awakening.'],['The Strongest One','Unlock Quake awakening.'],['The First Light','Unlock Light awakening.'],['Dark Lord','Unlock Dark awakening.'],['The Spider','Unlock Spider awakening.'],['Thunder God','Unlock Rumble awakening; currently listed as unobtainable.'],['The Red Dog','Unlock Magma awakening.'],['Colossal God','Unlock Buddha awakening.'],['Desert Prince','Unlock Sand awakening.'],['The Phoenix','Unlock Phoenix awakening.'],['Bread Chaser','Unlock Dough awakening.'],['Big News','Redeem code BIGNEWS.'],['Justice Seeker','Claim a bounty as a Marine.'],['Empty Vessel','Run out of energy.'],['The Unlucky','Die to a regular enemy.'],['The Vanquished','Die to a boss.'],['Fallen Hero','Die to a raid boss.'],['Iron Man','Reach max Aura.'],['Ultra Instinct','Reach max Instinct.'],['Mad Scientist','Buy a regular Microchip.'],['The Professor','Buy a special Microchip.'],['The Shadow','Stay in a server for more than 1 hour.'],['The Vampire','Stay in a server for more than 4 hours.'],['Dracula','Stay in a server for more than 12 hours.'],['The Explorer','Reach level 800.'],['The Adventurer','Reach level 1000.'],['The Mercenary','Reach level 1200.'],['The Viking','Reach level 1600.'],['The Pioneer','Reach level 2000.'],['The Glorious','Reach level 2400.'],['The Master','Reach max mastery on any weapon.'],['Fist of Death','Reach max mastery on a Fighting Style.'],['God Blade','Reach max mastery on a Sword.'],['King Sniper','Reach max mastery on a Gun.'],['Beyond the Sea','Reach max mastery on a Blox Fruit.'],['The Conqueror','Complete a raid.'],['Last Hope','Be the last person standing and win a raid.'],['The Supersonic','Complete a raid in under 5 minutes.'],['The Flash','Complete a raid in under 3 minutes 30 seconds.'],['The Champion',"Complete Bartilo's mission."],['Blessed One','Find a fruit.'],['The Rich','Obtain 5M+.'],['Unlimited Money','Obtain 20M+.'],['The Richest in the World','Obtain 50M+.'],['The Swordsman','Obtain a sword from Legendary Sword Dealer.'],['The Collector','Buy from Legendary Sword Dealer or Master of Auras.'],['Beast Hunter','Defeat a Sea Beast.'],['Forbidden One','Find Fist of Darkness in a chest.'],['Heavenly Devil','Defeat Don Swan.'],['The Cursed One','Defeat Darkbeard.'],['Beyond Death','Defeat Order.'],["Night's Edge",'Defeat Cursed Captain.'],['Lavish Living','Buy any fruit from Blox Fruit Dealer.'],['Night Owl','Buy a 1M+ fruit from Blox Fruit Dealer.'],['Dragonborn','Unlock Dragon Breath.'],['Burning Leg','Unlock Death Step.'],['Sharkman','Unlock Sharkman Karate.'],['Samurai','Unlock and equip Rengoku.'],['Risk Taker','Purchase a fruit from Blox Fruit Gacha.'],['Luck of the Draw','Get a fruit worth more than 1M from Gacha.'],['Unstoppable Force','Defeat 5 players without dying in same server.'],['Raging Demon','Defeat 20 players without dying in same server.'],['Human Weapon','Unlock Superhuman.'],['Demon Eye','Unlock True Triple Katana.'],['The Enhancer','Unlock any Aura color.'],['The Ghost','Collect 100 Ectoplasms.'],['Ruler of Night','Collect 250 Ectoplasms.'],['Lonely Reaper','Collect 1,000 Ectoplasms.'],['Sugar Rush','Collect 100 Candies during Christmas event.'],['Christmas Spirit','Collect 250 Candies during Christmas event.'],['Raid Boss','Get a fruit from Pirate Raid event.'],['The Real Deal','Defeat an Elite enemy.'],['Demon Mode','Unlock Yama.'],['Celestial Swordsman','Unlock Tushita.'],['Raiton','Unlock Electric Claw.'],['Shadow Sovereign','Defeat rip_indra True Form.'],['The Chosen One',"Find God's Chalice in a chest."],['Main Character',"Complete Citizen's mission."],['Skeleton','Collect 250 Bones.'],['Undead Lord','Collect 500 Bones during Halloween event.'],['Death King','Collect 2,000 Bones.'],['Shinigami','Defeat Soul Reaper.'],['Dough Commander','Defeat Cake Prince.'],['Dough King','Defeat Dough King.'],['Terrorbringer','Defeat 10 Terrorsharks.'],['Serpent Slayer','Defeat Leviathan.'],['Abyss Tamer','Clear 50 Sea Events.'],['Nautical Bane','Clear 200 Sea Events.'],['Tailed Beast','Acquire from Kitsune Shrine.'],['Liberator of the Sky','Defeat Tyrant of the Skies.'],['Treasure Catcher','Fish up 500 treasure chests.'],['Fish Wrangler','Reach fishing level 20.'],['Master Fisherman','Reach fishing level 100.'],['Fisherman','Obtain Fishing Rod.'],['The Debugger','Defeat Luckymaxer.'],['Grounded','Defeat ORIGINAL INDRA.'],['Dragon Talon Prodigy','Defeat content creator Uzoth.'],['Brazilian Warrior','Defeat luanclashwar.'],['I Was There','Witness Update 30 Sea 1 Rework event.'],['Monkey King','Defeat jinn._.'],['Skull Squad','Defeat Numberskull_.'],['LockGod','Defeat imfiji.'],['Touch Grass','Requirement kept secret by title owner.'],['Devious Bacon','Defeat koopekool.'],['AboveTheKloudz','Defeat WinterKloudz.'],['Mammoth Fan Club','Defeat Senpirates.'],['Dooly Gang','Defeat Vindooly.'],['Baldie','Defeat Woozer.'],['Light God','Defeat jujubotv.'],['The Living Cataclysm','Defeat HyperJay06.'],['God of Grinding','Defeat CRBoneMillion.'],['Pls Fruit','Defeat jetski2saucy.'],['Meteor Lord','Defeat MeteoricRBLX.'],['Divinely Inspired','Defeat divinityblox.'],['Samurai Dorado','Defeat Bloxyy0.'],['Fica Frio Aí','Defeat GeladoYT.']
+];
+titles.forEach(([n,h])=>add('Titles',n,'Title','Multiple Seas',h));
+const fruits=[['Dragon (Eastern/Western)','Mythical','Beast',15000000,5000],['Control','Mythical','Natural',9000000,4000],['Kitsune','Mythical','Beast',8000000,4000],['Yeti','Mythical','Beast',5000000,3000],['Tiger','Mythical','Beast',5000000,3000],['Spirit','Mythical','Natural',3400000,2550],['Gas','Mythical','Elemental',3200000,2500],['Venom','Mythical','Natural',3000000,2450],['Shadow','Mythical','Natural',2900000,2425],['Dough','Mythical','Elemental',2800000,2400],['T-Rex','Mythical','Beast',2700000,2350],['Mammoth','Mythical','Beast',2700000,2350],['Gravity','Mythical','Natural',2500000,2300],
+['Blizzard','Legendary','Elemental',2400000,2250],['Pain','Legendary','Natural',2300000,2200],['Lightning','Legendary','Elemental',2100000,2100],['Portal','Legendary','Natural',1900000,2000],['Phoenix','Legendary','Beast',1800000,2000],['Sound','Legendary','Natural',1700000,1900],['Spider','Legendary','Natural',1500000,1800],['Creation','Legendary','Natural',1400000,1750],['Love','Legendary','Natural',1300000,1700],['Buddha','Legendary','Beast',1200000,1650],['Quake','Legendary','Natural',1000000,1500],
+['Magma','Rare','Elemental',960000,1300],['Ghost','Rare','Natural',940000,1275],['Rubber','Rare','Natural',750000,1200],['Light','Rare','Elemental',650000,1100],
+['Diamond','Uncommon','Natural',600000,1000],['Eagle','Uncommon','Beast',550000,975],['Dark','Uncommon','Elemental',500000,950],['Sand','Uncommon','Elemental',420000,850],['Ice','Uncommon','Elemental',350000,750],['Flame','Uncommon','Elemental',250000,550],
+['Spike','Common','Natural',180000,380],['Smoke','Common','Elemental',100000,250],['Bomb','Common','Natural',80000,220],['Spring','Common','Natural',60000,180],['Blade','Common','Natural',30000,100],['Spin','Common','Natural',7500,75],['Rocket','Common','Natural',5000,50]];
+const dealer='Dealer stock, Dealer Gacha, or hourly world spawns.';
+const from={Common:dealer,Uncommon:dealer,Rare:dealer,Legendary:'Dealer stock, the Advanced Dealer on Mirage Island, or Factory raid.',Mythical:'Dealer stock, the Advanced Dealer on Mirage Island, or trading.'};
+const tv={'Dragon (Eastern/Western)':[3.17e9,7],Control:[165e6,8],Kitsune:[660e6,10],Yeti:[120e6,7],Tiger:[130e6,7],Spirit:[10e6,7],Gas:[65e6,6],Venom:[30e6,10],Shadow:[7e6,5],Dough:[35e6,8],'T-Rex':[25e6,7],Mammoth:[10e6,4],Gravity:[10e6,5],Blizzard:[6e6,3],Pain:[10e6,5],Lightning:[40e6,6],Portal:[15e6,9],Phoenix:[3e6,4],Sound:[3e6,4],Spider:[1.5e6,2],Creation:[2e6,3],Love:[1.2e6,3],Buddha:[15e6,9],Quake:[1e6,2],Magma:[1.2e6,5],Ghost:[850e3,1],Rubber:[780e3,1],Light:[900e3,4],Diamond:[800e3,1],Eagle:[600e3,2],Dark:[500e3,2],Sand:[500e3,2],Ice:[500e3,3],Flame:[280e3,1],Spike:[180e3,1],Smoke:[100e3,1],Bomb:[80e3,1],Spring:[60e3,1],Blade:[30e3,1],Spin:[7500,1],Rocket:[5000,1]};
+fruits.forEach(([n,r,t,b,rb])=>{const dr=n.startsWith('Dragon');add('Fruits',n,r,'Multiple Seas',(b<8000?'Always in Blox Fruit Dealer stock.':from[r])+(dr?' One purchase covers both forms and shares mastery.':''),t+' type'+(dr?'. Trade value shown is Western; Eastern is about 2.64B.':''));D[D.length-1].p={beli:b,robux:rb,val:tv[n][0],dem:tv[n][1]}});
+[['Werewolf','Tiger','Halloween event'],['Fiend','Yeti',"Valentine's event"],['Empyrean','Kitsune','Winter event']].forEach(([n,b,ev])=>add('Fruits',n,'Mutation','Multiple Seas','A reworked '+b+'. Own the permanent '+b+' to buy it from the shop menu, or find physical copies in '+ev+' gacha and bundles, or by trading.','Mythical Beast mutation; mastery starts from zero.'));
+const retiredFruits=[
+ ['Kilo','Common',5000,50,'Removed from the fruit pool. No longer obtainable from Dealer, Gacha, spawns, or trades in normal current gameplay.'],
+ ['Chop','Common',30000,100,'Removed/replaced in the fruit rework. No current legitimate obtainment method.'],
+ ['Falcon','Uncommon',300000,650,'Reworked into Eagle. The old Falcon fruit is unobtainable; obtain the current Eagle fruit instead.'],
+ ['Revive','Rare',550000,975,'Removed from the current fruit pool. No current legitimate obtainment method.'],
+ ['Barrier','Rare',800000,1250,'Reworked into Creation. The old Barrier fruit is unobtainable; obtain current Creation instead.'],
+ ['Door','Rare',950000,1400,'Removed/replaced by Portal. The old Door fruit is unobtainable; obtain Portal instead.'],
+ ['String','Legendary',1500000,1800,'Reworked into Spider. The old String fruit is unobtainable; obtain current Spider instead.'],
+ ['Rumble (old name)','Legendary',2100000,2100,'This is the legacy name for Lightning/Rumble. Use the current Lightning fruit listing.'],
+ ['Soul','Mythical',3400000,2550,'Renamed/reworked into Spirit. The old Soul fruit is unobtainable; obtain current Spirit instead.'],
+ ['Classic Dragon','Mythical',3500000,2600,'Reworked into Eastern and Western Dragon. The Classic Dragon version is unobtainable; obtain the current Dragon fruit.'],
+ ['Leopard','Mythical',5000000,3000,'Reworked into Tiger. The old Leopard fruit is unobtainable; obtain current Tiger instead.']
+];
+retiredFruits.forEach(([n,r,b,rb,how])=>{add('Fruits',n,'Unobtainable','Multiple Seas',how,'Historical dealer price only: '+b.toLocaleString('en-US')+' Beli / '+rb.toLocaleString('en-US')+' Robux. These are not current purchase offers.');D[D.length-1].p={beli:b,robux:rb,val:0,dem:0};D[D.length-1].lab='Unobtainable • historical prices';});
+add('Fruits','Meme','Unobtainable','Multiple Seas','Not a standard obtainable Blox Fruit in the current game. No legitimate method to obtain it.','No official Beli or Robux price exists.');
+
+
+const RA={C:'Common',U:'Uncommon',R:'Rare',L:'Legendary',M:'Mythical'},SE={1:'First Sea',2:'Second Sea',3:'Third Sea',m:'Multiple Seas',e:'Multiple Seas',a:'Multiple Seas'};
+const acc=(n,c,b)=>{add('Accessories',n,RA[c[0]],SE[c[1]],b,c[1]==='e'?'Event accessory; may only return seasonally.':c[1]==='a'?'Admin-only; not a normal progression item.':c[1]==='m'?'Found in more than one sea.':'');D[D.length-1].lab='Boosts'};
+[['White',2,10],['Yellow',4,15],['Orange',5,15],['Green',7,20],['Blue',8,30],['Purple',10,40],['Red',12,60]].forEach(([c,r,v])=>acc('Headband ('+c+')','C3','+'+r+'% Fruit/Sword/Melee/Gun Dmg Resist, +'+v+'% Speed'+(c==='Red'?', +5% Melee Dmg':'')));
+[['White',2,10],['Yellow',4,15],['Orange',6,15],['Green',8,20],['Blue',10,30],['Purple',14,40],['Red',12,60]].forEach(([c,m,v])=>acc('Dojo Belt ('+c+')','U3','+'+m+'% Melee Dmg, +'+v+'% Speed'));
+['Black','Green','Red'].forEach(c=>{acc('Bandanna ('+c+')','R3','+80% Speed, +10% Melee/Sword/Gun Dmg, +750 Energy');acc('Hunter Cape ('+c+')','R3','+80% Speed, +10% Melee/Sword/Gun Dmg, +750 HP')});
+`Headband (Black)|U3|+20% Speed, +7% Melee Dmg, +16% Fruit/Sword/Melee/Gun Dmg Resist, +1 Instinct Dodge
+Megalo's Coat|U1|+25% Speed, +5% All Dmg, +15% Sea Event Dmg, +100 Energy, +100 HP
+Bear Ears|R3|+10% All Dmg Resist, +500 Energy
+Black Cape|R1|+5% All Dmg, +100 Energy, +100 HP
+Black Spikey Coat|R2|+7.5% All Dmg, +200 Energy, +200 HP
+Blue Spikey Coat|R2|+7.5% All Dmg, +500 Energy, +250 HP
+Choppa|Rm|+3% Fruit Dmg, -15% Fruit Cooldown, +10% Fruit Dmg Resist
+Coat|R1|+10% Melee Dmg, +200 Energy
+Cool Shades|R1|+7.5% All Dmg, +17.5% Speed, +100 Energy, +100 HP
+Dojo Belt (Black)|R3|+16% Melee Dmg, +80% Speed, +1 Instinct Dodge
+Elf Hat|Re|+20% Speed, +10% Melee/Sword Dmg, -5% Melee/Sword Cooldown
+Ghoul Mask|R2|+35% Speed, +500 Energy, +10% Melee PvE Life Leech, +2.5% Melee PvP Life Leech
+Golden Sunhat|R3|+10% All Dmg, +500 HP
+Jaw Shield|R3|+50% Speed, +12.5% Melee Dmg, +10% Melee Dmg Resist, +500 Energy, +250 HP
+Lei|R3|+50% Health Regen
+Marine Cap|Rm|+7.5% Sword/Gun Dmg, -10% Sword/Gun Cooldown
+Pilot Helmet|R3|+130% Speed, +10% Health Regen, +250 Energy, +250 HP
+Pretty Helmet|R3|+50% Speed, +10% Melee Dmg, +12.5% Melee Dmg Resist, +250 Energy, +500 HP
+Red Spikey Coat|R2|+7.5% All Dmg, +250 Energy, +500 HP
+Santa Hat|Re|+30% Speed, +12.5% Fruit/Sword Dmg, +400 Energy, +400 HP
+Shark Tooth Necklace|R3|+50% Speed, +10% Dash Distance, +25% Sea Event Dmg
+Swordsman Hat|R1|+10% Sword Dmg
+T-Rex Skull|R3|+15% Melee/Fruit Dmg Resist, +750 HP
+Tomoe Ring|R1|+10% Fruit Dmg
+Top Hat|Rm|+3% Melee Dmg, -10% All Cooldown, +10% Sword Dmg Resist
+Usoap's Hat|Rm|+7.5% Gun Dmg, -15% Gun Cooldown
+Warrior Helmet|R2|+12.5% Melee/Sword Dmg, -5% Melee/Sword Cooldown
+Cupid's Coat|Le|+12.5% Fruit/Sword Dmg, +8% All Dmg Resist, +400 Energy, +600 HP
+D.S. Coat|La|+5% All Dmg, +200 Energy, +200 HP
+Dino Hood|L3|+10% Melee/Fruit Dmg, +50% Speed, +15 Dash Distance, +500 Energy, +500 HP
+Dragon Mantle|La|+15% Sword/Gun Dmg, +10 Air Dash Distance, +2 Air Jumps, -10% All Cooldown
+Feathered Visage|L3|+25% Speed, +25% Health Regen, +300 HP
+Heart Shades|Le|+12.5% Melee/Gun Dmg, +5% All Dmg Resist, +600 Energy, +400 HP
+Holy Crown|L3|+5% All Dmg, +5% All Dmg Resist, +5% Energy Regen, +500 Energy, +500 HP
+Kitsune Mask|L3|+10% Fruit Dmg, +2 Instinct Dodge, +15% Fruit Meter Boost, +50% Terror Level Vision, +750 HP
+Kitsune Ribbon|L3|+10% Fruit Dmg Resist, +15% Health Regen, +30% Speed, +7 Dash Speed, -25% Flash Step Cooldown, +2500 Energy
+Leviathan Crown|L3|+12% Melee Dmg, +35% Sea Event Dmg, +25% Health Regen, +40% Sea Event Material Drops, +1 Instinct Dodge
+Musketeer Hat|L3|+12.5% Sword/Gun Dmg, -12.5% Sword/Gun Cooldown
+Pale Scarf|L3|+15% Fruit/Sword Dmg, +2 Instinct Dodge, 10x Instinct Vision Range
+Swan Glasses|L2|+25% Speed, +8% All Dmg, -8% All Cooldown, +8% All Dmg Resist, +250 Energy, +250 HP
+Terror Jaw|L3|+10% Sword Dmg, -10% All Cooldown, +20% Sea Event Defense, +200 Energy, +200 HP
+Valkyrie Helm|L3|+15% Sword Dmg, +600 Energy, +600 HP
+Wyvern Helmet|La|+10% Melee/Sword/Gun Dmg Resist, +25% Health Regen, +5% Energy Regen, +750 Energy, +750 HP
+Zebra Cap|L2|+10% Sword Dmg, -15% Fruit Cooldown, +500 Energy, +100 HP
+50b Party Hat|Me|+10% EXP Boost, +400 Energy, +400 HP
+Party Hat|Me|+10% EXP Boost, +400 Energy, +400 HP
+Celestial Helmet|Me|+30% Summer Token Multiplier, +10% All Dmg Resist, -5% All Cooldown, 2x Instinct Vision Range
+Coven Witch Hat|Me|+10% Fruit Dmg Resist, +7% Fruit Dmg, +250 HP
+Cracked Egg Helmet|Me|+10% All Dmg Resist, +5% All Dmg, +500 HP
+Cupid's Top Hat|Me|+14% Speed, +2% Melee Dmg, +20% Hearts Multiplier, +214 Energy, +214 HP
+Dark Coat|M2|+15% Fruit Dmg, +600 Energy, +600 HP
+Divine Cloak|Me|+30% Summer Token Multiplier, +30% Speed, +7% Melee/Fruit Dmg, +500 Energy, +500 HP
+Easter Bunny Cape|Me|+3 Air Jumps, +50% Speed, +10% Melee Dmg
+Frosty Helmet|Me|+50% Speed, +10% Gun Dmg, +5% All Dmg Resist, +20% Candy Multiplier
+Holiday Cloak|Me|+10% Melee/Fruit Dmg, +1 Instinct Dodge
+Leviathan Shield|M3|+15% Sword/Melee/Gun Dmg Resist, +90% Sea Dmg Reduction, +30% Sea Event Defense, +1000 HP
+Oni Helmet|Me|+30% Summer Token Multiplier, -10% All Cooldown, +30% Health Regen, +30% Speed
+Peppermint Helmet|Me|+20% Speed, +5% All Dmg Resist, +10% Sword Dmg, +20% Candy Multiplier
+Pumpkin Mask|Me|+20% Speed, +5% Melee Dmg Resist, +6% Melee/Fruit Dmg, +250 HP
+Red Ribbon|Me|+20% Speed, +20% Candy Multiplier, +7% All Dmg Resist, +5% Fruit Dmg, -5% Fruit Cooldown
+Romantic Bouquet|Me|+14% Speed, +3% Melee Dmg Resist, +20% Friendship Boost, +143 Energy, +143 HP
+Sanguine Cloak|Me|+30% Summer Token Multiplier, +5% Melee Dmg Resist, +5% Melee/Sword Dmg, +500 HP
+Uzoth's Cloak|Ma|+20% Melee Dmg, +5% All Dmg Resist, +750 Energy, +750 HP
+Royal Nimbus|M1|+8% EXP Boost, +8% Mastery
+Coral Crown|Me|+25% Magnet Token Multiplier, +10% Fruit Dmg, +20% Sea Event Defense, +60% Sea Dmg Reduction, +500 HP
+Shark Cape|Me|+30% Magnet Token Multiplier, +30% Speed, +10% Melee/Sword Dmg, +30% Sea Event Dmg, +20% Sea Event Defense, +60% Sea Dmg Reduction, +500 HP`.split('\n').forEach(l=>{const[n,c,b]=l.split('|');acc(n,c,b)});
+const AU='Master of Auras NPC (name may differ after updates)';
+['Orange Soda','Bright Yellow','Yellow Sunshine','Slimy Green','Green Lizard','Blue Jeans','Plump Purple','Fiery Rose','Heat Wave','Absolute Zero'].forEach(n=>add('Auras',n,'Regular','Multiple Seas','Buy for 1,500 Fragments from the '+AU+'.','Cosmetic only; no stat bonus.'));
+['Snow White','Pure Red','Winter Sky'].forEach(n=>add('Auras',n,'Legendary','Multiple Seas','Buy for 7,500 Fragments from the '+AU+'.','Cosmetic only; no stat bonus.'));
+add('Auras','Rainbow Saviour','Secret','Multiple Seas',"Can't be bought. Complete the Horned Man's quest (defeat a series of bosses).",'Cosmetic only; no stat bonus.');
+add('Auras','Kitsune','Secret','Multiple Seas','Random chance when redeeming 15 or more Kitsune Shrines.','Cosmetic only; one of the rarest.');
+add('Auras','Aquamarine','Limited','Multiple Seas','Was 1,000 Confetti at the Party Shop; unobtainable right now.','Cosmetic only; no stat bonus.');
+add('Auras','Light Pink','Limited','Multiple Seas',"Was 1,000 Hearts at the Valentine Shop during the Valentine's event.",'Cosmetic only; no stat bonus.');
+const BS={1:'First Sea',2:'Second Sea',3:'Third Sea',0:'Multiple Seas'};
+`Ancient Beast|0|Dungeon, floor 5|3000|Blox Fruit|First dungeon boss; 2 phases.
+Awakened Ice Admiral|2|Ice Castle|1400|Blox Fruit|Route for Ice Castle keys.
+Beautiful Pirate|3|Floating Turtle|1950|Sword|Drops Canvander.
+Bobby|1|Pirate Village|55|Sword/Blox Fruit|Early quest boss.
+Cake Queen|3|Ice Cream Land|2175|Sword|Drops Buddy Sword; very tanky.
+Captain Elephant|3|Floating Turtle|1875|Sword|Uses Aura. Drops Twin Hooks.
+Chef|1|Pirate Village|55|Sword/Blox Fruit|Outside the yellow house.
+Core|2|Factory (Factory Raid)|none|none|Destroy it within 5 minutes of the raid starting.
+Cursed Skeleton Boss|3|Floating Turtle, the Crypt|2025|Sword|
+Cyborg (Boss)|1|Fountain City|675|Blox Fruit|Uses Rocket.
+Diamond (Boss)|2|Kingdom of Rose|750|Sword|Drops Longsword.
+Don Swan|2|Kingdom of Rose|1000|Blox Fruit|Defeating him gives the Heavenly Devil title.
+Fajita|2|Green Zone|925|Sword/Blox Fruit|
+Fishman Lord|1|Underwater City|425|Sword|Drops Trident.
+Gas Knight|0|Dungeon, floor 15|4000|Blox Fruit|Final boss on Easy mode.
+Gorilla God|0|Dungeon, a random Hard floor|TBA|Blox Fruit|
+Heaven's Guardian|0|Heavenly Dimension|2200|Blox Fruit|Uses Aura. Appears after the 3rd torch of the Soulless scroll quest.
+Hell's Messenger|0|Hell Dimension|2200|Blox Fruit|Uses Aura. Appears after the 3rd torch of the Fear the Reaper scroll quest.
+Hydra Leader|3|Hydra Island|1675|Blox Fruit|Uses Aura. Drops Venom Bow.
+Ice Admiral|1|Frozen Village|700|Blox Fruit|
+Island Empress|3|Hydra Island|1675|Blox Fruit|Uses Aura. Spawns every 25 minutes.
+Jeremy|2|Kingdom of Rose|850|Blox Fruit|
+Kilo Admiral|3|Great Tree|1750|Blox Fruit|
+Kitsune Lord|0|Dungeon, floor 10|3500|Blox Fruit|Second dungeon boss.
+Longma|3|Floating Turtle|2000|Sword|Drops Tushita. Needs the Tushita puzzle done first.
+Magma General|1|Magma Village|350|Blox Fruit|Anchored in place.
+Mob Leader|0|Jean-Luc Island|120|Sword|
+Orbitus|2|Green Zone|925|Sword/Blox Fruit|Drops Gravity Blade.
+Red Legionnaire|0|Celestial Domain|3000|Blox Fruit|Arrives during a raid on the Spirit Tree.
+rip_indra|3|Indra Island|1500|Sword|
+Rip Legionnaire|0|Oni Realm|3000|Blox Fruit|Arrives during a raid on the Spirit Tree.
+rip_return|0|Location not listed|2800|Melee|Uses Aura.
+Saber Expert|1|Jungle|200|Sword|Drops Saber.
+Smoke Admiral|2|Hot and Cold|1150|Sword/Blox Fruit|Drops Flail.
+Stone|3|Port Town|1550|Blox Fruit|Uses Aura.
+The Gorilla King|1|Jungle|25|Melee|Uses Aura.
+The Saw|1|Middle Town|100|Sword|Drops Shark Saw. 15 minutes to kill him.
+Lightning God|1|Upper Skylands|575|Sword/Blox Fruit|Drops Pole (1st Form).
+Tide Keeper|2|Forgotten Island|1475|Sword|Drops Dragon Trident; route to Water Key.
+Vice Admiral|1|Marine Fortress|130|Sword|
+Warden|1|Prison|230|Sword|
+Sky Warlord|1|Upper Skylands|500|Gun/Melee|
+Yeti (Boss)|1|Frozen Village|110|Melee|
+Zero|0|Dungeon, floor 20|5000|Blox Fruit|Last boss on Hard mode.`.split('\n').forEach(l=>{const[n,s,loc,lv,w,nt]=l.split('|');add('Bosses',n,'Boss',BS[s],loc+' · Boss level '+lv,'Fights with: '+w+(nt?'. '+nt:''));D[D.length-1].lab='Island & level'});
+const M={'Dragon (Eastern/Western)':'Z Heatwave Cannon@1,X Infernal Pincer@150,C Scorching Downfall@250,V Imperial Evolution@350,F Draconic Soar@75',Control:'Z Domain Control@1,X Slice N’ Dice@150,C Gamma Blade@250,F Transmutation@75',Kitsune:'Z Accursed Enchantment@1,X Tails of Burning Agony@50,C Fox Fire Disruption@100,V Transformation@300,F Wild Assault@200',Yeti:'Z Arctic Clap@1,X Frostbite Boulder@50,C Glacial Execution@100,V Transformation@300,F Tundra Rush@200',Tiger:'Z Finger Revolver@1,X Spiraling Kick@50,C Afterimage Assault@100,V Transformation@300,F Body Flicker@200',Spirit:'Z Frostfire Grasp@1,X Wrath of Ra@150,C Wrath of Shu@250,V End of Times@350,F Sky Ruler@75',Gas:'Z Suffocating Fumes@1,X Bursting Vapor@100,C Smog Demons@200,V Vapor Condensation@300,F Traveling Gas@50',Venom:'Z Poison Daggers@1,X Noxious Shot@100,C Toxic Fog@200,V Transformation@300,F Serpent’s Wrath@50',Shadow:'Z Somber Rebellion@1,X Shade Nest@100,C Nightmare Leech@200,V Corvus Torment@300,F Umbrage@50',Dough:'Z Missile Jab@1,X Pastry River@100,C Piercing Clothesline@200,V Dough Fist Fusillade@300,F Scorching Donut@50','T-Rex':'Z Tail Swipe@1,X Predatory Screech@50,C Hunter’s Rage@100,V Reptilian Scales@300,F Gigantic Leap@200',Mammoth:'Z Ancient Cutter@1,X True Prehistoric Punt@50,C Colossal Crusher@100,V Transformation@300,F Stampede@200',Gravity:'Z Singularity@1,X Orbital Chain@100,C Gravitational Prison@200,V Asteroid Crash@300,F Shooting Star@50',
+Quake:'Z Quake Punch@1,X Quake Wave@50,C Quake Erupt@100,V Dual Tsunami@150',Buddha:'Z Transform@1,X Impact@1,C Buddha Leap@100,V Buddha Explosion@200',Love:'Z Heart Shot@1,X Cupid’s Zone@50,C Irresistible Attraction@150,V Besto Friendo@200,F Flamingo Ride@100',Creation:'Z Batter Up@1,X Sleight of Hand@45,C Sword Box@90,V Magic City@130,F Fortify@10',Spider:'Z Spider Wraith@1,X Multi-string Attack@50,C Over-heated Sniper@100,V Ultimate Thread@225,F Spider Path@15',Sound:'Z Rhapsody Notes@1,X Fortissimo@50,C Symphonic Radiance@100,V Glorious Harmony@250,F Tempo: Prestissimo@175',Phoenix:'Z Cannon@1,X Regeneration Flames@90,C Fast Kick@160,V Full Transformation@250,F Hybrid Flight@30',Portal:'Z Portal Dash@1,X Parallel Escape@50,C World Warp@200,V Dimensional Rift@300,F Quantum Leap@100',Lightning:'Z Lightning Orb@1,X Thunderstorm@90,C Sky Judgement@160,V Thunderball Destruction@250,F Electric Flash@30',Pain:'Z Fury Jab@1,X Rage Release@100,C Agony Nuke@200,V Torturing Pulse@300,F Torment Warp@50',Blizzard:'Z Snowflake Shuriken@1,X White Out@90,C Howling Wind@160,V Blizzard Domain@250,F Tornado Flight@40',
+Light:'Z Light Ray@1,X Barrage of Light@40,C Reflection Kick@80,V Sky Beam Barrage@110,F Light Flight@10',Rubber:'Z Cannon@25,X Smash@50,C Rush@125,V Transformation@225,F Slingshot@80',Ghost:'Z Shivering Possession@1,X Spectral Release@50,C Cries of the Underworld@100,V Ghost Busters@150,F Wandering Soul@75',Magma:'Z Magma Clap@1,X Magma Eruption@45,C Magma Fist@95,V Magma Meteors@140,F Magma Floor@10',
+Flame:'Z Fire Bullets@1,X Burning Blast@25,C Fire Column@50,V Flame Destroyer@100,F Fire Flight@10',Ice:'Z Ice Spears@1,X Ice Surge@25,C Ice Bird@50,V Glacial Epoch@100',Sand:'Z Desert Sword@1,X Desert Funeral@40,C Sand Tornado@80,V Heavy Sand@120,F Sand Flight@15',Dark:'Z Dark Rocks@1,X Black Spiral@40,C Black Hole@80,V Dark Bomb@110',Eagle:'Z Wind Burst@1,X Feather Storm@35,C Bone Crusher@80,V Soaring Talon@110,F Flight@150',Diamond:'Z Encrust@1,X Shard Storm@1,C Shimmering Disruption@80,V Prismatic Reflection@110',
+Rocket:'Z Missile Fist@1,X Air Strike@20,C Rocket Crash@50,F Blast Off@75',Spin:'Z Razor Wind@1,X Tornado Assault@50,C Air Slasher@90,F Helicopter Flight@25',Blade:'Z Razor Cyclone@1,X Blade Dance@20,C Saw Shredder@50,F Turbine Flight@80',Spring:'Z Knock@1,X Spring Snipe@20,C Spring Cannon@50,V Spring Emperor@125,F Spring Leap@75',Bomb:'Z Targeted Bomb@1,X Bomb Grab@50,C Land Mines@75,V Self Destruct@125,F Explosive Jump@25',Smoke:'Z Smoke Slam@1,X Smoke Blast@20,C Smoke Liberation@50,F Smoke Bomber@10',Spike:'Z Spike Summon@1,X Whirlwind@25,C Spiky Ball@50,V Spike Barrage@75'};
+const mv=x=>{const m=x.cat==='Fruits'&&M[x.name];return m?'<dt>Moves (mastery needed to unlock)</dt><div class="mv">'+m.split(',').map(t=>{const[a,b]=t.split('@');return '<b>'+a[0]+'</b><span>'+esc(a.slice(2))+'</span><i>Mastery '+b+'</i>'}).join('')+'</div>':''};
+const icons={Fruits:'🍇',Swords:'⚔️','Fighting Styles':'🥋',Accessories:'🎩',Auras:'✨',Bosses:'👹',Titles:'🏆',Races:'🧬'};
+const cats=['All','Fruits','Swords','Fighting Styles','Accessories','Auras','Bosses','Titles','Races','Saved'];
+const order=['Mythical','Legendary','Rare','Uncommon','Common','Regular','Secret','Limited','Mutation','Retired'];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const itemEmoji=x=>icons[x.cat]||'✦';
+// Fruit artwork uses direct PNG assets; other categories use community-wiki file pages.
+const fruitArt={Rocket:'Rocket',Spin:'Spin',Blade:'Blade',Spring:'Spring',Bomb:'Bomb',Smoke:'Smoke',Spike:'Spike',Flame:'Flame',Falcon:'Falcon',Ice:'Ice',Sand:'Sand',Dark:'Dark',Diamond:'Diamond',Light:'Light',Rubber:'Rubber',Ghost:'Ghost',Magma:'Magma',Quake:'Quake',Buddha:'Buddha',Love:'Love',Spider:'Spider',Sound:'Sound',Phoenix:'Phoenix',Portal:'Portal',Blizzard:'Blizzard',Gravity:'Gravity',Mammoth:'Mammoth','T-Rex':'T-Rex',Dough:'Dough',Shadow:'Shadow',Venom:'Venom',Control:'Control',Spirit:'Spirit',Kitsune:'Kitsune',Dragon:'Dragon_East', 'Dragon (Eastern/Western)':'Dragon_East',Lightning:'Lightning',Pain:'Pain',Creation:'Creation',Eagle:'Eagle',Tiger:'Tiger',Yeti:'Yeti',Gas:'Gas'};
+const fruitImage=n=>{const base=fruitArt[n]||n.replace(/ \(.*?\)/g,'');const file=base==='Dragon_East'?'Dragon_East.png':base+'_Fruit.png';return 'https://raw.githubusercontent.com/blackxscripts/blox-fruits/main/'+encodeURIComponent(file)};
+const ini=n=>n.replace(/ — V[1-4]/g,'').replace(/ \(.*?\)/g,'').split(/[\s-]+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
+function imgFail(i){const l=(i.dataset.l||'').split('|'),n=+(i.dataset.n||0)+1;if(n<l.length){i.dataset.n=n;i.src=l[n]}else{i.style.display='none';i.parentElement.classList.add('noRemoteArt')}}
+// Resolve likely real file names from the community wiki. Sword files include their rarity
+// (for example CutlassCommon); other item pages commonly use the plain item name.
+const wikiArt=(x)=>{const clean=x.name.replace(/ — V[1-4]/g,'').replace(/ \(.*?\)/g,'').trim(),plain=clean.replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,''),tight=clean.replace(/[^a-z0-9]/gi,''),rar=(x.rarity||'').replace(/[^a-z]/gi,''),names=[];
+ if(x.cat==='Swords'){names.push(tight+rar,plain+'_'+rar,clean+rar,tight,plain)}
+ else if(x.cat==='Fighting Styles'){names.push(tight,plain,tight+'_Fighting_Style',plain+'_Fighting_Style')}
+ else if(x.cat==='Bosses'){names.push(tight,plain,tight+'_Boss',plain+'_Boss')}
+ else if(x.cat==='Races'){names.push(tight,plain,tight+'_Race',plain+'_Race')}
+ else {names.push(tight,plain)}
+ const urls=[];for(const nm of names){for(const ext of ['.png','.webp','.jpg']){const file=encodeURIComponent(nm+ext);urls.push('https://bloxfruitswiki.org/wiki/Special:FilePath/'+file);urls.push('https://blox-fruits.fandom.com/wiki/Special:FilePath/'+file)}}return [...new Set(urls)];};
+const pic=(x,cls='itemPic')=>{const fruit=x.cat==='Fruits',l=fruit?[fruitImage(x.name),...wikiArt(x)]:wikiArt(x);return '<div class="'+cls+'"><span class="mono">'+esc(ini(x.name))+'</span><small class="ci">'+itemEmoji(x)+'</small><img loading="lazy" referrerpolicy="no-referrer" alt="'+esc(x.name)+' artwork" src="'+esc(l[0])+'" data-l="'+esc(l.join('|'))+'" data-n="0" onerror="imgFail(this)"></div>'};
+const key=x=>x.cat+'|'+x.name,rc=r=>'r-'+r.toLowerCase().replace(/[^a-z]/g,''),rank=r=>{const i=order.indexOf(r);return i<0?99:i};
+let saved=new Set();try{saved=new Set(JSON.parse(localStorage.getItem('atlas-saved')||'[]'))}catch(e){}
+const persist=()=>{try{localStorage.setItem('atlas-saved',JSON.stringify([...saved]))}catch(e){}};
+let cat='All',rar='',view=[];
+$('sub').textContent=D.length+' entries across fruits, swords, fighting styles, accessories, auras, bosses, titles and races. Tap a fruit to see all its moves, and star what you want to grind for.';
+
+function renderTabs(){$('tabs').innerHTML=cats.map(c=>{const n=c==='All'?D.length:c==='Saved'?saved.size:D.filter(x=>x.cat===c).length;return '<button class="tab" data-c="'+c+'" aria-pressed="'+(c===cat)+'">'+(c==='Saved'?'★ Saved':c==='All'?'All':icons[c]+' '+c)+'<b>'+n+'</b></button>'}).join('')}
+function chips(){const box=$('chips');box.innerHTML='';
+ const set=order.filter(r=>D.some(x=>x.rarity===r&&(cat==='All'||(cat==='Saved'?saved.has(key(x)):x.cat===cat))));
+ if(cat==='Bosses'||set.length<2){rar='';return}
+ [['','All rarities'],...set.map(r=>[r,r])].forEach(([v,t])=>{const b=document.createElement('button');b.className='chip '+(v?rc(v):'');b.textContent=t;b.setAttribute('aria-pressed',rar===v);b.onclick=()=>{rar=v;chips();render()};box.appendChild(b)})}
+function filt(){const q=$('q').value.trim().toLowerCase(),s=$('sea').value,o=$('sort').value;
+ const l=D.filter(x=>(cat==='All'||(cat==='Saved'?saved.has(key(x)):x.cat===cat))&&(!rar||x.rarity===rar)&&(s==='all'||x.sea===s||x.sea==='Multiple Seas')&&(!q||(x.name+' '+x.how+' '+x.rarity+' '+x.cat+' '+x.extra+(x.p?' '+nf(x.p.beli)+' '+nf(x.p.robux):'')).toLowerCase().includes(q)));
+ if(o==='dem')l.sort((a,b)=>(b.p?b.p.dem:0)-(a.p?a.p.dem:0));if(o==='az')l.sort((a,b)=>a.name.localeCompare(b.name));if(o==='za')l.sort((a,b)=>b.name.localeCompare(a.name));if(o==='rar')l.sort((a,b)=>rank(a.rarity)-rank(b.rarity));if(o==='val')l.sort((a,b)=>(b.p?b.p.val:0)-(a.p?a.p.val:0));if(o==='beli')l.sort((a,b)=>(b.p?b.p.beli:0)-(a.p?a.p.beli:0));return l}
+const fmt=n=>{for(const [d,s] of [[1e9,'B'],[1e6,'M'],[1e3,'K']])if(n>=d)return +(n/d).toFixed(2)+s;return String(n)},nf=n=>n.toLocaleString('en-US');
+const starTxt=x=>saved.has(key(x))?'★':'☆';
+function render(){view=filt();$('h').textContent=cat==='All'?'Everything':cat;$('n').textContent=view.length+(view.length===1?' entry':' entries');$('x').style.display=$('q').value?'block':'none';{const n=(rar?1:0)+($('sea').value!=='all'?1:0)+($('sort').value!=='def'?1:0);$('fcount').textContent=n?' '+n:''}
+ const g=$('grid');if(!view.length){g.innerHTML='<div class="empty">'+(cat==='Saved'&&!saved.size?'Tap the ☆ on any card to save it here.':'Nothing matches those filters.')+'<br><button class="btn" id="reset" style="padding:10px 14px;margin-top:12px">Reset filters</button></div>';$('reset').onclick=reset;return}
+ g.innerHTML=view.map((x,i)=>'<div class="cell '+rc(x.rarity)+'"><button class="card'+(x.p?' has':'')+'" data-i="'+i+'">'+pic(x)+'<span class="top"><span>'+(icons[x.cat]||'✦')+'</span><span class="tag">'+esc(x.rarity)+'</span></span><strong>'+esc(x.name)+'</strong>'+(x.p?'<span class="px"><span><i>Beli</i>'+nf(x.p.beli)+'</span><span><i>Robux</i>'+nf(x.p.robux)+'</span><span><i>Trade value</i>~'+fmt(x.p.val)+'</span></span>':'')+'<span class="how">'+esc(x.how)+'</span><span class="foot">'+(x.sea==='Multiple Seas'?'Any sea':esc(x.sea))+(x.cat==='Fruits'&&M[x.name]?' · tap for moves':'')+'</span></button><button class="star" data-s="'+i+'" aria-pressed="'+saved.has(key(x))+'" aria-label="Save '+esc(x.name)+'">'+starTxt(x)+'</button></div>').join('')}
+function reset(){$('q').value='';$('sea').value='all';$('sort').value='def';setCat('All')}
+function setCat(c){cat=c;rar='';renderTabs();chips();render()}
+function toggle(x){const k=key(x);saved.has(k)?saved.delete(k):saved.add(k);persist();renderTabs()}
+function show(i){const x=view[i],d=$('dlg');d.className=rc(x.rarity);
+ $('sheet').innerHTML=(x.rarity==='Unobtainable'?'<div style="padding:9px 12px;border:1px solid #d65a5a;background:#6b202033;border-radius:10px;color:#ff9b9b;font-weight:700;margin-bottom:12px">UNOBTAINABLE — historical price only; not currently purchasable</div>':'')+'<div class="top"><span class="tag">'+esc(x.rarity)+'</span><span class="pos">'+(i+1)+' of '+view.length+'</span></div><h2>'+(icons[x.cat]||'✦')+' '+esc(x.name)+'</h2>'+pic(x,'sheetPic')+(x.p?'<div class="pr"><div><i>Beli price</i>'+nf(x.p.beli)+'</div><div><i>Robux price (permanent)</i>'+nf(x.p.robux)+'</div><div><i>Trade value (approx)</i>~'+fmt(x.p.val)+'</div><div><i>Permanent trade value (3×)</i>~'+fmt(x.p.val*3)+'</div><div><i>Trading demand</i>'+x.p.dem+'/10</div></div><div class="pos" style="margin-top:6px">Trade values are community estimates and change often.</div>':'')+'<dl><dt>'+(x.lab||'How to get it')+'</dt><dd>'+esc(x.how)+'</dd>'+(x.extra?'<dt>Good to know</dt><dd>'+esc(x.extra)+'</dd>':'')+'<dt>Category</dt><dd>'+x.cat+'</dd><dt>Sea</dt><dd>'+esc(x.sea)+'</dd></dl>'+mv(x)+'<div class="acts"><button class="btn primary" id="dsave">'+(saved.has(key(x))?'★ Saved':'☆ Save')+'</button><button class="btn" id="dcopy">Copy</button><button class="btn" id="dprev">‹ Prev</button><button class="btn" id="dnext">Next ›</button><button class="btn" id="dclose">Close</button></div>';
+ $('dsave').onclick=()=>{toggle(x);$('dsave').textContent=saved.has(key(x))?'★ Saved':'☆ Save';const s=document.querySelector('.star[data-s="'+i+'"]');if(s){s.textContent=starTxt(x);s.setAttribute('aria-pressed',saved.has(key(x)))}};
+ $('dcopy').onclick=async()=>{try{await navigator.clipboard.writeText(x.name+' ('+x.cat+', '+x.rarity+')'+(x.p?'\n'+nf(x.p.beli)+' Beli | '+nf(x.p.robux)+' Robux | trade value ~'+fmt(x.p.val):'')+'\n'+x.how+(x.extra?'\n'+x.extra:''));$('dcopy').textContent='Copied'}catch(e){$('dcopy').textContent='Copy failed'}setTimeout(()=>{if($('dcopy'))$('dcopy').textContent='Copy'},1500)};
+ $('dprev').onclick=()=>show((i-1+view.length)%view.length);$('dnext').onclick=()=>show((i+1)%view.length);$('dclose').onclick=()=>d.close();
+ if(!d.open)d.showModal()}
+$('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)setCat(b.dataset.c)});
+$('grid').addEventListener('click',e=>{const s=e.target.closest('.star'),c=e.target.closest('.card');
+ if(s){const x=view[+s.dataset.s];toggle(x);if(cat==='Saved')render();else{s.textContent=starTxt(x);s.setAttribute('aria-pressed',saved.has(key(x)))}}else if(c)show(+c.dataset.i)});
+$('dlg').addEventListener('click',e=>{if(e.target===$('dlg'))$('dlg').close()});
+$('dlg').addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('dnext').click();if(e.key==='ArrowLeft')$('dprev').click()});
+$('q').addEventListener('input',render);$('sea').addEventListener('change',render);$('sort').addEventListener('change',render);
+$('x').onclick=()=>{$('q').value='';render();$('q').focus()};
+const th=()=>{const l=document.documentElement.dataset.theme==='light';$('theme').textContent=l?'🌙':'☀️';$('theme').title=l?'Switch to night mode':'Switch to day mode';$('theme').setAttribute('aria-label',l?'Switch to night mode':'Switch to day mode');document.querySelector('meta[name=theme-color]').content=l?'#f3f7fb':'#07131f'};
+$('theme').onclick=()=>{const n=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=n;try{localStorage.setItem('atlas-theme',n)}catch(e){}th()};th();
+
+// Offline Atlas Guide: keyword/rule-based answers. It does not call an external AI service.
+const guidePanel=$('guidePanel'),guideChat=$('guideChat');
+$('guideFab').onclick=()=>{guidePanel.hidden=false;$('guideInput').focus()};
+$('guideClose').onclick=()=>guidePanel.hidden=true;
+function guideSay(text,who,chipsArr){const d=document.createElement('div');d.className='guideMsg '+who;d.textContent=text;guideChat.append(d);if(chipsArr&&chipsArr.length){const q=document.createElement('div');q.className='guideQuick';chipsArr.forEach(c=>{const b=document.createElement('button');b.type='button';b.textContent=c;b.onclick=()=>ask(c);q.append(b)});guideChat.append(q)}guideChat.scrollTop=guideChat.scrollHeight}
+function guideAnswer(raw){
+ const q=raw.toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9\s-]/g,' ').replace(/\s+/g,' ').trim();
+ if(/^(hi|hello|hey|yo|sup)$/.test(q)) return 'Hey! Ask me about a boss spawn, boss drops, a sword, accessory, fruit, race, Aura/Haki, fighting style, title, island, or how to unlock something. I search the Atlas item database and show the matching entry.';
+ if(/help|what can you do|topics|commands/.test(q)) return 'I can look up every item currently listed in this Atlas: bosses and their islands/spawn notes, swords, accessories, fruits and prices, races V1–V4, Aura, fighting styles and titles. Ask in normal words, for example: “Where does Cake Queen spawn?”, “How do I get Shark Anchor?”, “What does Pale Scarf do?”, or “How do I unlock Ghoul V3?”. If an answer is missing, search the website or check the linked community wiki because game updates can change details.';
+ if(/unobtain|retired|old fruit|removed/.test(q)) return 'Unobtainable means the item cannot currently be obtained by its old method. For retired fruits, check the fruit card: it distinguishes historical Beli/Robux prices from current methods. A retired fruit has no normal Dealer/Gacha/spawn route unless the game reintroduces it.';
+ if(/gacha|drop chance|chance|probability/.test(q) && /fruit/.test(q)) return 'The exact Blox Fruit Gacha odds are not officially published for each fruit. I will not make up percentages. Rarity affects how likely a fruit is, but the game does not provide a reliable public per-fruit rate.';
+ // Exact named fighting-style answer must run before race keyword detection (Godhuman contains the word Human).
+ if(/\bgod\s*human\b|\bgodhuman\b/.test(q))return 'GODHUMAN — Fighting Style (not Human V1).\nWhere: Ancient Monk on Floating Turtle, Third Sea.\nRequirements: 400 Mastery on Superhuman, Death Step, Electric Claw, Sharkman Karate and Dragon Talon; 20 Fish Tails, 20 Magma Ore, 10 Dragon Scales and 10 Mystic Droplets; 5,000,000 Beli and 5,000 Fragments.\nSteps: 1) Unlock Third Sea. 2) Raise all five styles to 400 Mastery. 3) Collect the four materials. 4) Talk to Ancient Monk on Floating Turtle and buy Godhuman. Advanced Combat, Combat and Sanguine Art are not part of the five-style mastery requirement.';
+ // Match complete item names only. Word boundaries prevent Godhuman from matching Human V1.
+ const normName=v=>v.toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+ const match=D.filter(x=>{const n=normName(x.name);return n && (' '+q+' ').includes(' '+n+' ')}).sort((a,b)=>b.name.length-a.name.length)[0];
+ if(match){
+   const parts=[match.name+' ['+match.cat+' · '+match.rarity+']',match.sea+'.',match.lab||'How to obtain: '+match.how];
+   if(match.extra)parts.push('Details: '+match.extra);
+   if(match.p)parts.push('Listed dealer price: '+match.p.beli.toLocaleString('en-US')+' Beli / '+match.p.robux.toLocaleString('en-US')+' Robux. Approx. trade value: '+fmt(match.p.val)+'.');
+   if(match.cat==='Bosses')parts.push('Boss spawn: '+match.how+'. Check the in-game respawn timer at the spawn point; timers vary by boss.');
+   if(match.cat==='Fruits')parts.push('Gacha: exact per-fruit odds are not officially published.');
+   return parts.join('\n');
+ }
+ if(/boss|spawn|location|where.*(spawn|boss)|spawn.*where|drop/.test(q)){
+   const bosses=D.filter(x=>x.cat==='Bosses');
+   const likely=bosses.filter(x=>(x.name+' '+x.how+' '+x.extra).toLowerCase().split(/\s+/).some(w=>w.length>4&&q.includes(w)));
+   if(likely.length)return likely.slice(0,4).map(x=>x.name+' — '+x.sea+': '+x.how+(x.extra?' '+x.extra:'')).join('\n\n');
+   return 'I can look up named bosses in the Bosses tab. Ask with the boss name, e.g. “Where does Tide Keeper spawn?” or “What does Longma drop?”. Bosses have different respawn rules; use the timer shown at the boss spawn point rather than assuming one timer for every boss.';
+ }
+ if(/aura|haki|color|colour/.test(q))return 'Aura (Enhancement) can be trained by keeping it active while landing eligible attacks. Talk to the Ability Teacher for Aura, then use the Aura Editor to change unlocked colours. Search “Aura” in the Auras tab for colours and event availability. Some colour unlock methods are limited-time; see the individual entry.';
+ if(/race|v[1-4]|awakening|ghoul|cyborg|draco|angel|shark|rabbit|mink|human/.test(q))return 'For race upgrades, open the Races tab and choose the exact race + V1, V2, V3 or V4 entry. V2 uses the Alchemist quest in Second Sea (Draco has its own Dragon Wizard path); V3 uses Arowe or the race-specific quest; V4 requires Third Sea progression, Temple of Time trials and the Ancient Clock. Tell me your race and current version for a step-by-step route.';
+ if(/godhuman|sharkman|electric claw|death step|dragon talon|sanguine|superhuman|fighting style|combat/.test(q))return 'Open Fighting Styles and select the style name for its teacher, mastery and material requirements. For example, the Godhuman entry lists the advanced-style mastery and Ancient Monk route. Requirements can change after updates, so compare the in-game NPC prompt before spending materials.';
+ if(/fruit|beli|robux|price|value/.test(q))return 'Open Fruits and search the exact fruit name. Each fruit card shows listed Beli and Robux prices and an approximate trade value when available. Gacha odds per fruit are not officially published; trade values are community estimates, not guaranteed prices.';
+ if(/sword|blade|katana/.test(q))return 'Open Swords and search the sword name. The item card shows its listed acquisition route. If a boss drops it, ask “Where does [boss] spawn?” to find the boss entry.';
+ if(/accessor|hat|coat|mask|scarf|helmet/.test(q))return 'Open Accessories and search the accessory name. Its detail card shows how to obtain it and any listed stat bonuses.';
+ if(/title/.test(q))return 'Open Titles and search the exact title name. The card lists the unlock requirement. Some titles are event-limited or creator-only.';
+ // If the user asks a broad question, search the dataset using important words and surface the best matches.
+ const words=q.split(' ').filter(w=>w.length>3);
+ const hits=D.map(x=>({x,score:words.reduce((n,w)=>n+((x.name+' '+x.how+' '+x.extra+' '+x.cat).toLowerCase().includes(w)?1:0),0)})).filter(z=>z.score>0).sort((a,b)=>b.score-a.score).slice(0,4);
+ if(hits.length)return 'Here are the closest Atlas matches:\n'+hits.map(z=>'• '+z.x.name+' ('+z.x.cat+') — '+z.x.how).join('\n')+'\n\nAsk with the exact item or boss name for its full details.';
+ return 'I could not find that exact answer in the offline Atlas database. Try including the item/boss name, or open the matching category and use Search. This guide covers the entries stored in this website, but it is not a live generative AI and cannot reliably answer every question about new updates.';
+}
+
+renderTabs();chips();render();
+(()=>{
+const FR=D.filter(x=>x.cat==='Fruits'&&x.p&&x.p.val>0&&x.rarity!=='Unobtainable').sort((a,b)=>b.p.val-a.p.val);
+const fk=s=>String(s).toLowerCase().replace(/\(.*?\)/g,' ').replace(/[’']/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+const money=n=>'~'+fmt(n),short=n=>n.split(' (')[0];
+const nm=l=>l.map(z=>(z.perm?'Perm ':'')+short(z.f.name)).join(' + ');
+const fdlg=$('fdlg'),mdlg=$('mdlg');
+/* One Filters button */
+$('fbtn').onclick=()=>{chips();fdlg.showModal()};
+$('fclose').onclick=()=>fdlg.close();
+$('freset').onclick=()=>{$('sea').value='all';$('sort').value='def';rar='';chips();render()};
+[fdlg,mdlg].forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
+/* More: Trade Lab + Tools */
+$('more').onclick=()=>mdlg.showModal();
+$('mclose').onclick=()=>mdlg.close();
+mdlg.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{['trade','tools'].forEach(k=>{$('m-'+k).hidden=k!==b.dataset.m});mdlg.querySelectorAll('[data-m]').forEach(z=>z.setAttribute('aria-pressed',z===b))});
+const opt='<option value="">Choose a fruit</option>'+FR.map((f,i)=>'<option value="'+i+'">'+esc(f.name)+' ('+money(f.p.val)+')</option>').join('');
+const col=(p,t)=>'<div><h3>'+t+'</h3>'+[0,1,2,3].map(s=>'<div class="tslot"><select id="'+p+'s'+s+'" aria-label="'+t+', fruit '+(s+1)+'">'+opt+'</select><label><input type="checkbox" id="'+p+'p'+s+'"> Permanent</label></div>').join('')+'<div class="tsum" id="'+p+'t"></div></div>';
+$('m-trade').innerHTML='<p class="tsum">Pick up to 4 fruits on each side. Values come from the fruit cards, and Permanent counts 3×.</p><div class="tgrid" id="tgrid">'+col('a','Your fruits')+col('b','Their offer')+'</div><div id="tres" aria-live="polite"></div><div class="acts"><button class="btn primary" id="tsave">Save trade</button><button class="btn" id="tcopy">Copy</button><button class="btn" id="tswap">Swap sides</button><button class="btn" id="tclear">Clear</button></div><div id="thist"></div>';
+const sideOf=p=>[0,1,2,3].map(s=>({v:$(p+'s'+s).value,perm:$(p+'p'+s).checked})).filter(z=>z.v!=='').map(z=>{const f=FR[+z.v];return{f,perm:z.perm,v:f.p.val*(z.perm?3:1)}});
+function tradeEval(A,B){if(!A.length||!B.length)return{err:'Add at least one fruit on each side.'};
+ const s=l=>l.reduce((n,z)=>n+z.v,0),ga=s(A),gb=s(B),d=gb-ga,pct=d/ga*100,v=pct>=5?'W':pct<=-5?'L':'F',dm=l=>Math.max(...l.map(z=>z.f.p.dem)),da=dm(A),db=dm(B),adv=[];
+ if(v==='W'){adv.push('Accept it: you gain about '+money(d)+' ('+Math.round(pct)+'% more than you give).');if(pct>60)adv.push('That is unusually generous. Re-check every fruit name and its Permanent tag in the trade window, and back out if the offer changes at the last second.')}
+ else if(v==='L'){const gap=-d,sug=FR.filter(f=>f.p.val>=gap*.7&&f.p.val<=gap*1.25&&!B.some(z=>z.f===f)).sort((x,y)=>y.p.dem-x.p.dem).slice(0,3);adv.push('Do not accept yet: you lose about '+money(gap)+' ('+Math.round(-pct)+'% of what you give).');
+  if(sug.length)adv.push('Ask them to add '+sug.map(f=>short(f.name)+' ('+money(f.p.val)+')').join(' or ')+' to even it out.');
+  else adv.push(-pct>40?'The gap is too big for one add. Decline, or counter by asking for a different fruit.':'Counter by dropping one of your fruits or asking for two smaller adds.')}
+ else adv.push('Close to even (within 5%). Accept if you want what they offer, or ask for a small add of about '+money(Math.max(ga*.05,-d))+' to tip it your way.');
+ if(da>db+2)adv.push('You give the higher-demand fruit ('+da+'/10 vs '+db+'/10). Those sell faster, so ask for extra.');
+ if(db>da+2)adv.push('They give the higher-demand fruit ('+db+'/10 vs '+da+'/10), which makes this offer better than the numbers show.');
+ if(B.length-A.length>=2&&da>db||A.length-B.length>=2&&db>da)adv.push('Many-for-one trades hide a catch: a pile of lower-demand fruits is harder to resell than one fruit people want, so count it as worth less than it looks.');
+ if(B.some(z=>z.perm))adv.push('Their offer counts a Permanent fruit at 3× value. Confirm the Permanent tag in the trade window before you accept.');
+ return{ga,gb,d,pct,v,adv}}
+let last=null,H=[];try{H=JSON.parse(localStorage.getItem('atlas-trades')||'[]')}catch(e){}
+function runTrade(){const A=sideOf('a'),B=sideOf('b'),r=tradeEval(A,B),o=$('tres');
+ $('at').textContent=A.length?'Total '+money(A.reduce((n,z)=>n+z.v,0)):'';$('bt').textContent=B.length?'Total '+money(B.reduce((n,z)=>n+z.v,0)):'';
+ if(r.err){last=null;o.innerHTML='<div class="empty">'+r.err+'</div>';return}
+ last={A,B,r};const c=r.v==='W'?'vW':r.v==='L'?'vL':'vF';
+ o.innerHTML='<div class="verdict '+c+'"><big>'+(r.v==='F'?'Fair':r.v)+'</big>'+(r.v==='W'?'You win this trade':r.v==='L'?'You lose this trade':'Even trade')+'<div class="meter"><i style="width:'+Math.max(4,Math.min(96,r.gb/(r.ga+r.gb)*100)).toFixed(0)+'%"></i></div><span class="tsum">You give '+money(r.ga)+' · You get '+money(r.gb)+'</span></div><b>What to do next</b><ul class="adv">'+r.adv.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul>'}
+const histR=()=>{$('thist').innerHTML=H.length?'<p class="tsum">Saved trades (tap to load)</p>'+H.map((h,i)=>'<button class="btn hbtn" data-h="'+i+'">'+esc(h.s)+' · '+h.v+'</button>').join(''):''};
+$('tgrid').addEventListener('change',runTrade);
+$('thist').addEventListener('click',e=>{const b=e.target.closest('[data-h]');if(!b)return;const h=H[+b.dataset.h];['a','b'].forEach(p=>[0,1,2,3].forEach(s=>{const z=h[p][s],ix=z?FR.findIndex(f=>f.name===z[0]):-1;$(p+'s'+s).value=ix>=0?String(ix):'';$(p+'p'+s).checked=ix>=0&&!!z[1]}));runTrade()});
+$('tsave').onclick=()=>{if(!last)return;const{A,B,r}=last;H.unshift({a:A.map(z=>[z.f.name,z.perm]),b:B.map(z=>[z.f.name,z.perm]),v:r.v==='F'?'Fair':r.v,s:nm(A)+' for '+nm(B)});H=H.slice(0,5);try{localStorage.setItem('atlas-trades',JSON.stringify(H))}catch(e){}histR();$('tsave').textContent='Saved';setTimeout(()=>$('tsave').textContent='Save trade',1500)};
+$('tcopy').onclick=async()=>{if(!last)return;const{A,B,r}=last;try{await navigator.clipboard.writeText('Trade check: I give '+nm(A)+' ('+money(r.ga)+') for '+nm(B)+' ('+money(r.gb)+'). Verdict: '+(r.v==='F'?'Fair':r.v)+'.\n'+r.adv.join('\n'));$('tcopy').textContent='Copied'}catch(e){$('tcopy').textContent='Copy failed'}setTimeout(()=>$('tcopy').textContent='Copy',1500)};
+$('tswap').onclick=()=>{[0,1,2,3].forEach(s=>{const a=$('as'+s),b=$('bs'+s),pa=$('ap'+s),pb=$('bp'+s);[a.value,b.value]=[b.value,a.value];[pa.checked,pb.checked]=[pb.checked,pa.checked]});runTrade()};
+$('tclear').onclick=()=>{['a','b'].forEach(p=>[0,1,2,3].forEach(s=>{$(p+'s'+s).value='';$(p+'p'+s).checked=false}));runTrade()};
+$('m-tools').innerHTML='<div class="acts" style="margin-top:0"><button class="btn" id="tv">🏆 Fruits by trade value</button><button class="btn" id="td">🔥 Fruits by demand</button><button class="btn" id="ts">📋 Copy saved list</button><button class="btn" id="tc">🗑 Clear saved</button></div><p class="tsum" id="tmsg"></p>';
+const go=o=>{mdlg.close();$('q').value='';$('sea').value='all';$('sort').value=o;setCat('Fruits')};
+$('tv').onclick=()=>go('val');$('td').onclick=()=>go('dem');
+$('ts').onclick=async()=>{const t=[...saved].map(k=>{const[c,n]=k.split('|');return n+' ('+c+')'}).join('\n');try{await navigator.clipboard.writeText(t||'Nothing saved yet');$('tmsg').textContent=saved.size?'Copied '+saved.size+' saved items.':'Nothing saved yet. Tap ☆ on a card first.'}catch(e){$('tmsg').textContent='Copy failed. Your browser blocked clipboard access.'}};
+$('tc').onclick=()=>{if(saved.size&&confirm('Remove all '+saved.size+' saved items?')){saved.clear();persist();renderTabs();render();$('tmsg').textContent='Saved list cleared.'}};
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();$('q').focus()}});
+histR();runTrade();
+/* Smarter Atlas Guide */
+const STOP=('what where which tell that this with from best cost worth does good hows have make will your mine more when them they about fruit fruits trade trades price prices value values boss bosses sword swords their there these those would could should spawn spawns drop drops obtain unlock mastery accessory aura auras title titles races cheap cheapest expensive demand popular wanted offer swap perm permanent legendary mythical uncommon common moves skills abilities ability better versus compare').split(' ');
+const toks=new Set();D.forEach(x=>fk(x.name).split(' ').forEach(w=>{if(w.length>=5)toks.add(w)}));
+const lev=(a,b)=>{const d=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let p=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const t=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,p+(a[i-1]===b[j-1]?0:1));p=t}}return d[b.length]};
+const fixTypos=raw=>raw.replace(/[A-Za-z’']{5,}/g,w=>{const l=fk(w);if(!l||toks.has(l)||STOP.includes(l))return w;let b=null,bd=9;toks.forEach(t=>{if(t[0]!==l[0])return;const d=lev(l,t);if(d<bd){bd=d;b=t}});return b&&bd<=(l.length>7?2:1)?b:w});
+function fruitsIn(s){const t=' '+fk(s)+' ',o=[];FR.forEach(f=>{const at=t.indexOf(' '+fk(f.name)+' ');if(at>=0)o.push({f,at,perm:/ perm(anent)? $/.test(t.slice(0,at+1))})});return o.sort((a,b)=>a.at-b.at).map(z=>({f:z.f,at:z.at,perm:z.perm,v:z.f.p.val*(z.perm?3:1)}))}
+const findItem=raw=>{const q=' '+fk(raw)+' ';return D.filter(x=>{const n=fk(x.name);return n&&q.includes(' '+n+' ')}).sort((a,b)=>b.name.length-a.name.length)[0]};
+const pl=D.filter(x=>x.cat==='Fruits'&&x.p&&x.p.beli>0&&x.rarity!=='Unobtainable');
+const topL=(l,k,asc)=>l.slice().sort((a,b)=>asc?a.p[k]-b.p[k]:b.p[k]-a.p[k]).slice(0,5).map((x,i)=>(i+1)+'. '+short(x.name)+' — '+(k==='beli'?nf(x.p.beli)+' Beli':k==='dem'?'demand '+x.p.dem+'/10, '+money(x.p.val):money(x.p.val)+', demand '+x.p.dem+'/10')).join('\n');
+const chipsFor=x=>x&&x.cat==='Fruits'&&M[x.name]?['Moves of '+short(x.name),'Open Trade Lab']:['Top trade values','Open Trade Lab'];
+let ctx=null;
+function smart(raw){
+ const fx=fixTypos(raw);if(fx!==raw&&(fruitsIn(fx).length>fruitsIn(raw).length||(findItem(fx)&&!findItem(raw))))raw=fx;
+ const ql=' '+fk(raw)+' ',has=r=>r.test(ql),fs=fruitsIn(raw),sp=ql.indexOf(' for ');
+ if(has(/ (trade lab|trade calculator|trading tool) /)){mdlg.showModal();return{t:'Trade Lab is open. Pick up to four fruits for each side and I will call it W or L and tell you what to do next.',c:['Top trade values']}}
+ if(sp>=0){const A=fs.filter(z=>z.at<sp),B=fs.filter(z=>z.at>sp);
+  if(A.length&&B.length){const r=tradeEval(A,B);return{t:'You give: '+nm(A)+' ('+money(r.ga)+')\nYou get: '+nm(B)+' ('+money(r.gb)+')\nVerdict: '+(r.v==='F'?'Fair':r.v)+' ('+(r.d<0?'-':'+')+fmt(Math.abs(r.d))+')\n\n'+r.adv.map(a=>'• '+a).join('\n'),c:['Open Trade Lab']}}
+  if(has(/ (trade|swap|offer|w or l|win or lose) /))return{t:'Put at least one fruit on each side of “for”, like “Is Kitsune for Dough + Gas a good trade?”. You can also use the Trade Lab under More.',c:['Open Trade Lab']}}
+ if(fs.length>=2&&has(/ (vs|versus|or|compare|better|than) /)){const a=fs[0].f,b=fs[1].f,hi=k=>a.p[k]===b.p[k]?'tie':short((a.p[k]>b.p[k]?a:b).name);
+  return{t:short(a.name)+' vs '+short(b.name)+'\nTrade value: '+money(a.p.val)+' vs '+money(b.p.val)+' (higher: '+hi('val')+')\nDemand: '+a.p.dem+'/10 vs '+b.p.dem+'/10 (higher: '+hi('dem')+')\nBeli: '+nf(a.p.beli)+' vs '+nf(b.p.beli)+'\nRobux: '+nf(a.p.robux)+' vs '+nf(b.p.robux)+'\nTrade value says what a fruit trades for, not how it plays. Pick by what you do most: grinding, PvP or raids.',c:['Open Trade Lab']}}
+ if(has(/ (cheapest|least expensive|lowest price) /))return{t:'Cheapest fruits by Beli price:\n'+topL(pl,'beli',1),c:['Top trade values']};
+ if(has(/ (most|highest|top|best) /)&&has(/ (demand|wanted|popular) /))return{t:'Highest trading demand:\n'+topL(FR,'dem'),c:['Top trade values','Open Trade Lab']};
+ if(has(/ (most|highest|top|best) /)&&has(/ (valuable|expensive|value|values|worth) /))return{t:'Highest trade values (community estimates):\n'+topL(FR,'val'),c:['Open Trade Lab']};
+ const rm=ql.match(/ (mythical|legendary|uncommon|common|rare) fruits? /);
+ if(rm&&has(/ (list|show|all|what|which|name) /)){const R=rm[1][0].toUpperCase()+rm[1].slice(1),l=D.filter(x=>x.cat==='Fruits'&&x.rarity===R).map(x=>short(x.name));return{t:R+' fruits ('+l.length+'): '+l.join(', ')+'.',c:['Top trade values']}}
+ let it=findItem(raw),q2=raw;
+ if(!it&&has(/ (it|its|that|this) /)&&ctx){it=ctx;q2=raw+' '+ctx.name}
+ if(it)ctx=it;
+ if(it&&it.cat==='Fruits'&&M[it.name]&&has(/ (moves?|skills?|abilit(y|ies)|keys?) /))return{t:short(it.name)+' moves:\n'+M[it.name].split(',').map(t=>{const[a,b]=t.split('@');return a[0]+' — '+a.slice(2)+' (mastery '+b+')'}).join('\n'),c:chipsFor(it)};
+ return{t:guideAnswer(q2),c:chipsFor(it)}}
+const ask=v=>{guideSay(v,'user');let r;try{r=smart(v)}catch(err){r={t:'I hit a problem reading that. Try rephrasing, or search the item by name.'}}guideSay(r.t,'bot',r.c)};
+$('guideForm').addEventListener('submit',e=>{e.preventDefault();const v=$('guideInput').value.trim();if(!v)return;$('guideInput').value='';ask(v)});
+document.querySelectorAll('#guidePanel > .guideQuick button').forEach(b=>b.onclick=()=>ask(b.dataset.q));
+window.atlasAsk=smart;
+})();
+</script></body></html>
